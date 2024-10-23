@@ -81,7 +81,7 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
               case 1:
                 return (
                   <>
-                    <h4 className="text-xl font-semibold mb-3">What's your area of expertise?</h4>
+                    <h4 className="text-xl font-semibold mb-3">What&apos;s your area of expertise?</h4>
                     <Input
                       value={userInfo.expertise}
                       onChange={(e) => updateUserInfo('expertise', e.target.value)}

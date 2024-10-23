@@ -23,9 +23,9 @@ const modules = {
   }
 function getModuleByTitle(title: string) {
     for (const level in modules) {
-        const module = (modules as { [key: string]: { id: number; title: string; lab: string | null; }[] })[level]?.find(mod => mod.title === title);
-        if (module) {
-            return module;
+        const foundModule = (modules as Record<string, { id: number; title: string; lab: string | null; }[]>)[level]?.find(mod => mod.title === title);
+        if (foundModule) {
+            return foundModule;
         }
     }
     return null; 
