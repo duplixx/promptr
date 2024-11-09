@@ -95,15 +95,15 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
                     <h4 className="text-xl font-semibold mb-3">Choose your learning style</h4>
                     <RadioGroup onValueChange={(value) => updateUserInfo('learningStyle', value)} value={userInfo.learningStyle}>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="visual" id="visual" />
+                        <RadioGroupItem value="visual" id="visual" className='bg-white'/>
                         <Label htmlFor="visual">Visual</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="auditory" id="auditory" />
+                        <RadioGroupItem value="auditory" id="auditory" className='bg-white'/>
                         <Label htmlFor="auditory">Auditory</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="kinesthetic" id="kinesthetic" />
+                        <RadioGroupItem value="kinesthetic" id="kinesthetic" className='bg-white'/>
                         <Label htmlFor="kinesthetic">Kinesthetic</Label>
                       </div>
                     </RadioGroup>
@@ -126,6 +126,7 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
                                 updateUserInfo('goals', userInfo.goals.filter(g => g !== goal));
                               }
                             }}
+                            className='bg-white'
                           />
                           <Label htmlFor={goal}>{goal}</Label>
                         </div>
