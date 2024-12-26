@@ -6,13 +6,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { ArrowUp, Send, Settings2, ChevronRight, ChevronLeft, Zap } from "lucide-react"
+import { Send, Settings2, ChevronRight, ChevronLeft, Zap } from "lucide-react"
 import {
   Sidebar,
   SidebarHeader,
   SidebarContent,
   SidebarProvider,
-  SidebarTrigger,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
