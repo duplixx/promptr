@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+from schemas.user import UserType
 import google.generativeai as genai
 import json
 import uvicorn
@@ -18,12 +19,6 @@ app.add_middleware(
 
 genai.configure(api_key="AIzaSyAOqw73yo8DkfoeYl4dY7mzwEKUPilBAIk")
 model = genai.GenerativeModel('gemini-1.5-flash')
-
-class UserType(BaseModel):
-    level: str
-    expertise: str
-    learning_style: str
-    goals: List[str]
 
 class Message(BaseModel):
     role: str
@@ -115,6 +110,6 @@ async def analyze_prompt(request: ChatRequest):
             
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+    
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
