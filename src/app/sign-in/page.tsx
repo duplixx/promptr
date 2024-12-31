@@ -107,7 +107,7 @@ const SignIn = () => {
               </Link>
             </div>
 
-            <AuthButton />
+            {/* <AuthButton /> */}
           </form>
           <LoginGithub />
         </Form>
