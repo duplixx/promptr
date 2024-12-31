@@ -43,7 +43,7 @@ const SignIn = () => {
 
     try {
       await loginWithCreds(formData);
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong!");
       form.setError("root", {
         message: "Invalid credentials",

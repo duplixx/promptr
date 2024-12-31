@@ -1,7 +1,6 @@
 "use server";
 
 import { signIn, signOut } from "auth";
-import { db } from "db";
 import { revalidatePath } from "next/cache";
 
 // const getUserByEmail = async (email: string) => {
@@ -37,13 +36,6 @@ export const loginWithCreds = async (formData: FormData): Promise<void> => {
   }
 
   try {
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: true,
-      redirectTo: "/dashboard",
-    });
-
     revalidatePath("/");
   } catch (error) {
     throw error;

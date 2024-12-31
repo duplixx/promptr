@@ -38,11 +38,6 @@ interface Message {
   user_type: UserInfo;
 }
 
-interface ImprovedPrompt {
-  title: string;
-  prompt: string;
-}
-
 interface PromptAnalysis {
   label: string;
   feedback: string;
@@ -56,12 +51,11 @@ interface PromptAnalysis {
     reasoning: string;
   }[];
 }
-
 interface ChatInterfaceProps {
   onAnalyzePrompt: (prompt: string, userInfo: UserInfo) => Promise<string>;
 }
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
+const ChatInterface: React.FC<ChatInterfaceProps> = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -135,7 +129,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
       });
 
       if (!response.ok) throw new Error("Failed to fetch response");
-      const data = await response.json();
+      const data = (await response.json()) as PromptAnalysis;
       setPromptAnalysis(data);
 
       setMessages((prev) => [
