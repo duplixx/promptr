@@ -37,17 +37,17 @@ const SignIn = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData()
-    formData.append('email', values.email)
-    formData.append('password', values.password)
-    
+    const formData = new FormData();
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+
     try {
       await loginWithCreds(formData);
     } catch (error) {
-      toast.error('Something went wrong!')
-      form.setError('root', {
-        message: 'Invalid credentials'
-      })
+      toast.error("Something went wrong!");
+      form.setError("root", {
+        message: "Invalid credentials",
+      });
     }
   }
 

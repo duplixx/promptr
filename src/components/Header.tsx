@@ -49,12 +49,12 @@ export async function Header() {
         <div className="flex items-center space-x-4">
           {!session?.user ? (
             <Link href="/sign-in">
-            <Button
-              variant="ghost"
-              className="bg-gradient-to-r from-gray-300 to-blue-300 bg-clip-text text-transparent transition-all duration-300 hover:from-white hover:to-blue-400"
-            >
-              Log In
-            </Button>
+              <Button
+                variant="ghost"
+                className="bg-gradient-to-r from-gray-300 to-blue-300 bg-clip-text text-transparent transition-all duration-300 hover:from-white hover:to-blue-400"
+              >
+                Log In
+              </Button>
             </Link>
           ) : (
             <>

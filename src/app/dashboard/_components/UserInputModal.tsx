@@ -1,13 +1,26 @@
-"use client"
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+"use client";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 
 interface UserInputModalProps {
   isOpen: boolean;
@@ -21,14 +34,14 @@ interface UserInfo {
   goals: string[];
 }
 
-const steps = ['Level', 'Expertise', 'Learning Style', 'Goals'];
+const steps = ["Level", "Expertise", "Learning Style", "Goals"];
 
 const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [userInfo, setUserInfo] = useState<UserInfo>({
-    level: '',
-    expertise: '',
-    learningStyle: '',
+    level: "",
+    expertise: "",
+    learningStyle: "",
     goals: [],
   });
 
@@ -65,14 +78,21 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
               case 0:
                 return (
                   <>
-                    <h4 className="text-xl font-semibold mb-3">Select your level</h4>
-                    <Select onValueChange={(value) => updateUserInfo('level', value)} value={userInfo.level}>
+                    <h4 className="mb-3 text-xl font-semibold">
+                      Select your level
+                    </h4>
+                    <Select
+                      onValueChange={(value) => updateUserInfo("level", value)}
+                      value={userInfo.level}
+                    >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select your level" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="beginner">Beginner</SelectItem>
-                        <SelectItem value="intermediate">Intermediate</SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate
+                        </SelectItem>
                         <SelectItem value="advanced">Advanced</SelectItem>
                       </SelectContent>
                     </Select>
@@ -81,10 +101,14 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
               case 1:
                 return (
                   <>
-                    <h4 className="text-xl font-semibold mb-3">What&apos;s your area of expertise?</h4>
+                    <h4 className="mb-3 text-xl font-semibold">
+                      What&apos;s your area of expertise?
+                    </h4>
                     <Input
                       value={userInfo.expertise}
-                      onChange={(e) => updateUserInfo('expertise', e.target.value)}
+                      onChange={(e) =>
+                        updateUserInfo("expertise", e.target.value)
+                      }
                       placeholder="Enter your area of expertise"
                     />
                   </>
@@ -92,18 +116,37 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
               case 2:
                 return (
                   <>
-                    <h4 className="text-xl font-semibold mb-3">Choose your learning style</h4>
-                    <RadioGroup onValueChange={(value) => updateUserInfo('learningStyle', value)} value={userInfo.learningStyle}>
+                    <h4 className="mb-3 text-xl font-semibold">
+                      Choose your learning style
+                    </h4>
+                    <RadioGroup
+                      onValueChange={(value) =>
+                        updateUserInfo("learningStyle", value)
+                      }
+                      value={userInfo.learningStyle}
+                    >
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="visual" id="visual" className='bg-white'/>
+                        <RadioGroupItem
+                          value="visual"
+                          id="visual"
+                          className="bg-white"
+                        />
                         <Label htmlFor="visual">Visual</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="auditory" id="auditory" className='bg-white'/>
+                        <RadioGroupItem
+                          value="auditory"
+                          id="auditory"
+                          className="bg-white"
+                        />
                         <Label htmlFor="auditory">Auditory</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="kinesthetic" id="kinesthetic" className='bg-white'/>
+                        <RadioGroupItem
+                          value="kinesthetic"
+                          id="kinesthetic"
+                          className="bg-white"
+                        />
                         <Label htmlFor="kinesthetic">Kinesthetic</Label>
                       </div>
                     </RadioGroup>
@@ -112,21 +155,34 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
               case 3:
                 return (
                   <>
-                    <h4 className="text-xl font-semibold mb-3">Select your goals</h4>
+                    <h4 className="mb-3 text-xl font-semibold">
+                      Select your goals
+                    </h4>
                     <div className="space-y-2">
-                      {['Improve writing skills', 'Learn advanced techniques', 'Increase efficiency', 'Explore creative applications'].map((goal) => (
+                      {[
+                        "Improve writing skills",
+                        "Learn advanced techniques",
+                        "Increase efficiency",
+                        "Explore creative applications",
+                      ].map((goal) => (
                         <div className="flex items-center space-x-2" key={goal}>
                           <Checkbox
                             id={goal}
                             checked={userInfo.goals.includes(goal)}
                             onCheckedChange={(checked) => {
                               if (checked) {
-                                updateUserInfo('goals', [...userInfo.goals, goal]);
+                                updateUserInfo("goals", [
+                                  ...userInfo.goals,
+                                  goal,
+                                ]);
                               } else {
-                                updateUserInfo('goals', userInfo.goals.filter(g => g !== goal));
+                                updateUserInfo(
+                                  "goals",
+                                  userInfo.goals.filter((g) => g !== goal),
+                                );
                               }
                             }}
-                            className='bg-white'
+                            className="bg-white"
                           />
                           <Label htmlFor={goal}>{goal}</Label>
                         </div>
@@ -145,9 +201,9 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen}>
-      <DialogContent className="sm:max-w-[600px] bg-gradient-to-r from-gray-900 via-purple-900 to-violet-900 text-white">
+      <DialogContent className="bg-gradient-to-r from-gray-900 via-purple-900 to-violet-900 text-white sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle className="text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+          <DialogTitle className="mb-4 text-4xl font-bold leading-tight lg:text-5xl">
             Personalize Your AI Journey
           </DialogTitle>
           <DialogDescription className="text-xl text-white opacity-90">
@@ -155,23 +211,32 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
           </DialogDescription>
         </DialogHeader>
         <div className="py-8">
-          <div className="bg-black bg-opacity-30 p-6 rounded-xl border border-purple-500/20 shadow-2xl shadow-purple-500/10">
+          <div className="rounded-xl border border-purple-500/20 bg-black bg-opacity-30 p-6 shadow-2xl shadow-purple-500/10">
             {renderStepContent()}
           </div>
         </div>
         <DialogFooter>
-          <div className="flex justify-between w-full">
-            <Button onClick={handleBack} disabled={currentStep === 0} 
-                    className="bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 rounded-[20px]">
+          <div className="flex w-full justify-between">
+            <Button
+              onClick={handleBack}
+              disabled={currentStep === 0}
+              className="rounded-[20px] bg-white px-6 py-3 text-purple-600 hover:bg-gray-100"
+            >
               Back
             </Button>
-            <Button onClick={handleNext} disabled={
-              (currentStep === 0 && !userInfo.level) ||
-              (currentStep === 1 && !userInfo.expertise) ||
-              (currentStep === 2 && !userInfo.learningStyle) ||
-              (currentStep === 3 && userInfo.goals.length === 0)
-            } className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-[20px] text-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ease-in-out">
-              {currentStep === steps.length - 1 ? 'Start Your Journey' : 'Next Step'}
+            <Button
+              onClick={handleNext}
+              disabled={
+                (currentStep === 0 && !userInfo.level) ||
+                (currentStep === 1 && !userInfo.expertise) ||
+                (currentStep === 2 && !userInfo.learningStyle) ||
+                (currentStep === 3 && userInfo.goals.length === 0)
+              }
+              className="rounded-[20px] bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-3 text-lg font-semibold text-white transition-all duration-300 ease-in-out hover:from-blue-600 hover:to-purple-700"
+            >
+              {currentStep === steps.length - 1
+                ? "Start Your Journey"
+                : "Next Step"}
             </Button>
           </div>
         </DialogFooter>

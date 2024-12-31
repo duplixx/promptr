@@ -30,7 +30,7 @@ export const {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (!credentials || !credentials.email || !credentials.password) {
+        if (!credentials?.email || !credentials.password) {
           return null;
         }
 
@@ -53,7 +53,7 @@ export const {
         } else {
           const isMatch = bcrypt.compareSync(
             credentials.password as string,
-            user.hashedPassword
+            user.hashedPassword,
           );
           if (!isMatch) {
             throw new Error("Incorrect password.");
