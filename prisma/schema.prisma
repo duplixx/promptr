@@ -24,6 +24,10 @@ model User {
   name          String?
   email         String?         @unique
   hashedPassword String?
+  level          String   @default("beginner")
+  expertise      String   @default("general")
+  learningStyle  String   @default("visual")
+  goals          String[] @default([])
   emailVerified DateTime?
   image         String?
   accounts      Account[]

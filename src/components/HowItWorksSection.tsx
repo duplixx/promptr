@@ -1,7 +1,7 @@
 export default function HowItWorksSection() {
     return (
       <section id="how-it-works" className="container mx-auto px-4 py-20">
-        <h2 className="text-3xl font-bold mb-12 text-center">How It Works</h2>
+        <h2 className="text-3xl font-bold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">How It Works</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <StepCard
             number={1}

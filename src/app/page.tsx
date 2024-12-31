@@ -5,27 +5,58 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import Footer from "@/components/Footer";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import GradientBackground from "@/components/ui/gradient-background";
-
+import TestimonialsSection from "@/components/TestimonialsSection";
+import PricingSection from "@/components/PricingSection";
+import CTASection from "@/components/CTASection";
+import StatsSection from "@/components/StatsSection";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen text-gray-100">
+    <div className="flex flex-col max-h-screen text-gray-100 w-full">
       <Header />
-      <main>
-      <div className="py-12">
-        <GradientBackground>
-          <MaxWidthWrapper>
+      <main className="flex-1">
+        <div className="py-12">
+          <GradientBackground>
+            <MaxWidthWrapper>
               <HeroSection />
-          </MaxWidthWrapper>
+            </MaxWidthWrapper>
           </GradientBackground>
         </div>
-        <div className="py-12">
+        
+        <div className="py-16 bg-gray-900">
+          <MaxWidthWrapper>
+            <StatsSection />
+          </MaxWidthWrapper>
+        </div>
+
+        <div className="py-20">
           <MaxWidthWrapper>
             <FeaturesSection />
           </MaxWidthWrapper>
         </div>
-        <div className="py-12">
-          <HowItWorksSection />
+
+        <div className="py-16 bg-gray-900">
+          <MaxWidthWrapper>
+            <HowItWorksSection />
+          </MaxWidthWrapper>
+        </div>
+
+        <div className="py-20">
+          <MaxWidthWrapper>
+            <TestimonialsSection />
+          </MaxWidthWrapper>
+        </div>
+
+        <div className="py-16 bg-gray-900">
+          <MaxWidthWrapper>
+            <PricingSection />
+          </MaxWidthWrapper>
+        </div>
+
+        <div className="py-20">
+          <MaxWidthWrapper>
+            <CTASection />
+          </MaxWidthWrapper>
         </div>
       </main>
       <Footer />
