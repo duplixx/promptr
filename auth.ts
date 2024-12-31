@@ -40,13 +40,13 @@ export const {
         const email = credentials.email as string;
         const hash = saltAndHashPassword(credentials.password as string);
 
-        let user = await db.user.findUnique({
+        let user = (await db.user.findUnique({
           where: { email },
           select: {
             email: true,
-            hashedPassword: true
-          }
-        }) as AuthUser | null;
+            hashedPassword: true,
+          },
+        })) as AuthUser | null;
 
         if (!user) {
           user = await db.user.create({
@@ -66,6 +66,7 @@ export const {
         }
 
         return user;
-      },    }),
+      },
+    }),
   ],
 });
