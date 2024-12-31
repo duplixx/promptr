@@ -1,6 +1,6 @@
 # 🧠 Prompt Engineering Learning Path 🚀
 
-Welcome to the most mind-bending, AI-whispering, prompt-perfecting learning experience this side of the singularity! 
+Welcome to the most mind-bending, AI-whispering, prompt-perfecting learning experience this side of the singularity!
 
 ## 🎃 Hacktoberfest 2024
 

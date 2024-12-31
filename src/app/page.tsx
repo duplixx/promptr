@@ -6,17 +6,16 @@ import Footer from "@/components/Footer";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import GradientBackground from "@/components/ui/gradient-background";
 
-
 export default function LandingPage() {
   return (
     <div className="min-h-screen text-gray-100">
       <Header />
       <main>
-      <div className="py-12">
-        <GradientBackground>
-          <MaxWidthWrapper>
+        <div className="py-12">
+          <GradientBackground>
+            <MaxWidthWrapper>
               <HeroSection />
-          </MaxWidthWrapper>
+            </MaxWidthWrapper>
           </GradientBackground>
         </div>
         <div className="py-12">
