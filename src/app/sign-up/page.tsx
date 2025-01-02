@@ -15,10 +15,13 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import LoginGithub from "@/components/LoginGithub";
-import { loginWithCreds } from "@/actions/auth";
+import { registerWithCreds } from "@/actions/auth";
 import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
@@ -27,27 +30,29 @@ const formSchema = z.object({
   }),
 });
 
-const SignIn = () => {
+const SignUp = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("password", values.password);
-
+    const formData = new FormData()
+    formData.append('name', values.name)
+    formData.append('email', values.email)
+    formData.append('password', values.password)
+    
     try {
-      await loginWithCreds(formData);
-    } catch {
-      toast.error("Something went wrong!");
-      form.setError("root", {
-        message: "Invalid credentials",
-      });
+      await registerWithCreds(formData);
+    } catch (error) {
+      toast.error('Something went wrong!')
+      form.setError('root', {
+        message: 'Registration failed'
+      })
     }
   }
 
@@ -55,9 +60,9 @@ const SignIn = () => {
     <div className="flex min-h-screen w-full items-center justify-center">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
         <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-800">Welcome Back!</h2>
+          <h2 className="text-3xl font-bold text-gray-800">Create Account</h2>
           <p className="mt-2 text-gray-600">
-            Sign in to continue your learning journey
+            Join us to start your learning journey
           </p>
         </div>
 
@@ -65,8 +70,21 @@ const SignIn = () => {
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-6"
-            action={loginWithCreds}
+            action={registerWithCreds}
           >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
@@ -98,28 +116,19 @@ const SignIn = () => {
               )}
             />
 
-            <div className="flex items-center justify-between">
-              <Link
-                href="/forgot-password"
-                className="text-sm text-indigo-600 hover:text-indigo-500"
-              >
-                Forgot password?
-              </Link>
-            </div>
-
-            {/* <AuthButton /> */}
+            <AuthButton />
           </form>
           <LoginGithub />
         </Form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don&apos;t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/sign-up"
+              href="/sign-in"
               className="text-indigo-600 hover:text-indigo-500"
             >
-              Sign up
+              Sign in
             </Link>
           </p>
         </div>
@@ -128,4 +137,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
