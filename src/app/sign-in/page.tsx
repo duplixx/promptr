@@ -37,17 +37,17 @@ const SignIn = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData()
-    formData.append('email', values.email)
-    formData.append('password', values.password)
-    
+    const formData = new FormData();
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+
     try {
       await loginWithCreds(formData);
-    } catch (error) {
-      toast.error('Something went wrong!')
-      form.setError('root', {
-        message: 'Invalid credentials'
-      })
+    } catch {
+      toast.error("Something went wrong!");
+      form.setError("root", {
+        message: "Invalid credentials",
+      });
     }
   }
 
@@ -107,14 +107,14 @@ const SignIn = () => {
               </Link>
             </div>
 
-            <AuthButton />
+            {/* <AuthButton /> */}
           </form>
           <LoginGithub />
         </Form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/sign-up"
               className="text-indigo-600 hover:text-indigo-500"

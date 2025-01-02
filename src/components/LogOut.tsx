@@ -1,8 +1,7 @@
-"use client"
+"use client";
 import React from "react";
 import { Button } from "./ui/button";
 import { logout } from "@/actions/auth";
-
 
 const LogOut = () => {
   return (

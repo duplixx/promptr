@@ -5,7 +5,10 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { db } from "./db";
 import { saltAndHashPassword } from "@/utils/helper";
-
+interface AuthUser {
+  email: string | null;
+  hashedPassword: string | null;
+}
 export const {
   handlers: { GET, POST },
   signIn,
@@ -30,18 +33,20 @@ export const {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (!credentials || !credentials.email || !credentials.password) {
+        if (!credentials?.email || !credentials.password) {
           return null;
         }
 
         const email = credentials.email as string;
-        const hash = saltAndHashPassword(credentials.password);
+        const hash = saltAndHashPassword(credentials.password as string);
 
-        let user: any = await db.user.findUnique({
-          where: {
-            email,
+        let user = (await db.user.findUnique({
+          where: { email },
+          select: {
+            email: true,
+            hashedPassword: true,
           },
-        });
+        })) as AuthUser | null;
 
         if (!user) {
           user = await db.user.create({
@@ -53,7 +58,7 @@ export const {
         } else {
           const isMatch = bcrypt.compareSync(
             credentials.password as string,
-            user.hashedPassword
+            user.hashedPassword!,
           );
           if (!isMatch) {
             throw new Error("Incorrect password.");

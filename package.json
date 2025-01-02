@@ -7,7 +7,12 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "prepare": "husky install",
+    "format:fix": "prettier --write .",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "lint:check": "eslint \"**/*.{ts,tsx}\" --max-warnings=0 && python .github/workflows/eslint_disable_check.py",
+    "lint:fix": "eslint --fix \"**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@ai-sdk/google": "^0.0.52",
@@ -58,6 +63,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.4",
     "postcss": "^8.4.39",
+    "husky": "^9.1.7",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "prisma": "^5.22.0",
