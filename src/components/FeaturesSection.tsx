@@ -1,38 +1,48 @@
-import { Zap, Code, Lightbulb } from "lucide-react"
+import { Zap, Code, Lightbulb } from "lucide-react";
 
 export default function FeaturesSection() {
   return (
     <section id="features" className="py-20">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">Platform Features</h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <h2 className="mb-12 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-center text-3xl font-bold text-transparent">
+          Platform Features
+        </h2>
+        <div className="grid gap-8 md:grid-cols-3">
           <FeatureCard
-            icon={<Zap className="w-12 h-12 mb-4 text-yellow-400" />}
+            icon={<Zap className="mb-4 h-12 w-12 text-yellow-400" />}
             title="Real-time Feedback"
             description="Get instant analysis on your prompts' strength and areas for improvement."
           />
           <FeatureCard
-            icon={<Code className="w-12 h-12 mb-4 text-green-400" />}
+            icon={<Code className="mb-4 h-12 w-12 text-green-400" />}
             title="Interactive Exercises"
             description="Practice with hands-on exercises designed to enhance your skills."
           />
           <FeatureCard
-            icon={<Lightbulb className="w-12 h-12 mb-4 text-purple-400" />}
+            icon={<Lightbulb className="mb-4 h-12 w-12 text-purple-400" />}
             title="AI-Powered Suggestions"
             description="Receive intelligent suggestions to optimize your prompts for better results."
           />
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-function FeatureCard({ icon, title, description }: { icon: JSX.Element; title: string; description: string }) {
+function FeatureCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: JSX.Element;
+  title: string;
+  description: string;
+}) {
   return (
-    <div className="bg-gray-700 p-6 rounded-lg">
+    <div className="rounded-lg bg-gray-700 p-6">
       {icon}
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <h3 className="mb-2 text-xl font-semibold">{title}</h3>
       <p className="text-gray-300">{description}</p>
     </div>
-  )
+  );
 }

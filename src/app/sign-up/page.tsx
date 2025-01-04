@@ -41,18 +41,18 @@ const SignUp = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData()
-    formData.append('name', values.name)
-    formData.append('email', values.email)
-    formData.append('password', values.password)
-    
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+
     try {
       await registerWithCreds(formData);
     } catch (error) {
-      toast.error('Something went wrong!')
-      form.setError('root', {
-        message: 'Registration failed'
-      })
+      toast.error("Something went wrong!");
+      form.setError("root", {
+        message: "Registration failed",
+      });
     }
   }
 

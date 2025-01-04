@@ -12,7 +12,7 @@ import StatsSection from "@/components/StatsSection";
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col max-h-screen text-gray-100 w-full">
+    <div className="flex max-h-screen w-full flex-col text-gray-100">
       <Header />
       <main className="flex-1">
         <div className="py-12">
@@ -22,8 +22,8 @@ export default function LandingPage() {
             </MaxWidthWrapper>
           </GradientBackground>
         </div>
-        
-        <div className="py-16 bg-gray-900">
+
+        <div className="bg-gray-900 py-16">
           <MaxWidthWrapper>
             <StatsSection />
           </MaxWidthWrapper>
@@ -35,7 +35,7 @@ export default function LandingPage() {
           </MaxWidthWrapper>
         </div>
 
-        <div className="py-16 bg-gray-900">
+        <div className="bg-gray-900 py-16">
           <MaxWidthWrapper>
             <HowItWorksSection />
           </MaxWidthWrapper>
@@ -47,7 +47,7 @@ export default function LandingPage() {
           </MaxWidthWrapper>
         </div>
 
-        <div className="py-16 bg-gray-900">
+        <div className="bg-gray-900 py-16">
           <MaxWidthWrapper>
             <PricingSection />
           </MaxWidthWrapper>
