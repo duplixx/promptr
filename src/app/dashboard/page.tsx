@@ -7,9 +7,9 @@ import { redirect } from "next/navigation";
 const MainPage: React.FC = async () => {
   const session = await auth();
 
-  if (!session?.user) {
-    redirect("/sign-in");
-  }
+  // if (!session?.user) {
+  //   redirect("/sign-in");
+  // }
 
   return (
     <div className="container mx-auto px-4">
