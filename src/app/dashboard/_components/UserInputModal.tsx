@@ -145,9 +145,9 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen}>
-      <DialogContent className="sm:max-w-[600px] bg-gradient-to-r from-gray-900 via-purple-900 to-violet-900 text-white">
+      <DialogContent className="sm:max-w-[600px] bg-black text-white border border-purple-500/20 shadow-xl shadow-purple-500/10 backdrop-blur-md">
         <DialogHeader>
-          <DialogTitle className="text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+          <DialogTitle className="text-4xl lg:text-5xl font-bold mb-4 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
             Personalize Your AI Journey
           </DialogTitle>
           <DialogDescription className="text-xl text-white opacity-90">

@@ -64,10 +64,10 @@ export const loginWithCreds = async (formData: FormData): Promise<void> => {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const name = formData.get('name') as string;
-    const level = formData.get('level') as string;
-    const expertise = formData.get('expertise') as string;
-    const learningStyle = formData.get('learningStyle') as string;
-    const goals = formData.getAll('goals') as string[];
+    // const level = (formData.get('level') as string) || "beginner"; 
+    // const expertise = formData.get('expertise') as string || "general"; 
+    // const learningStyle = formData.get('learningStyle') as string || "visual"; 
+    // const goals = formData.getAll('goals') as string[];
 
     try {
       const existingUser = await getUserByEmail(email);
@@ -81,10 +81,6 @@ export const loginWithCreds = async (formData: FormData): Promise<void> => {
           name,
           email,
           hashedPassword: await hash(password, 10),
-          level,
-          expertise,
-          learningStyle,
-          goals,
         },
       });
 
