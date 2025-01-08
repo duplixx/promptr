@@ -257,7 +257,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
       className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
     >
       <Card
-        className={`max-w-[85%] border-0 ${message.role === "user" ? "bg-indigo-900" : "bg-indigo-900"} text-gray-100`}
+        className={`max-w-[85%] border-0 ${message.role === "user" ? "bg-indigo-800" : "bg-indigo-900"} text-gray-100`}
       >
         <CardContent className="p-3">
           <p className="whitespace-pre-wrap text-sm">{message.content}</p>
@@ -371,7 +371,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
             <div className="flex items-center space-x-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="rounded-full p-0">
+                  <Button variant="ghost" className="rounded-full p-0 m-1">
                     <Avatar>
                       <AvatarImage src="" alt="User Avatar" />
                       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500 text-white">

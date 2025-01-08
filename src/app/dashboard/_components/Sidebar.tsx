@@ -62,7 +62,7 @@ const MainSidebar: React.FC<MainSidebarProps> = ({
         <SidebarHeader className="bg-gray-800 p-4">
           <div className="flex justify-between items-center">
             {isSidebarOpen && (
-              <h2 className="text-lg font-semibold text-white">Learning Tracks</h2>
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Learning Tracks</h2>
             )}
           
           <Button
