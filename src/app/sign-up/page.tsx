@@ -32,10 +32,10 @@ const formSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
-  level: z.string().min(1, { message: "Please select your level" }),
-  expertise: z.string().min(1, { message: "Please enter your area of expertise" }),
-  learningStyle: z.string().min(1, { message: "Please select your learning style" }),
-  goals: z.array(z.string()).min(1, { message: "Please select at least one goal" }),
+  // level: z.string().min(1, { message: "Please select your level" }),
+  // expertise: z.string().min(1, { message: "Please enter your area of expertise" }),
+  // learningStyle: z.string().min(1, { message: "Please select your learning style" }),
+  // goals: z.array(z.string()).min(1, { message: "Please select at least one goal" }),
 });
 
 const SignUp = () => {
@@ -45,10 +45,6 @@ const SignUp = () => {
       name: "",
       email: "",
       password: "",
-      level: "",
-      expertise: "",
-      learningStyle: "",
-      goals: [],
     },
   });
 
