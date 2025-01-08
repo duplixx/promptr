@@ -6,6 +6,7 @@ from schemas.user import UserType
 import google.generativeai as genai
 import json
 import uvicorn
+from routers import problems
 
 app = FastAPI()
 
@@ -16,7 +17,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+app.include_router(problems.router)
 genai.configure(api_key="AIzaSyAOqw73yo8DkfoeYl4dY7mzwEKUPilBAIk")
 model = genai.GenerativeModel('gemini-1.5-flash')
 
