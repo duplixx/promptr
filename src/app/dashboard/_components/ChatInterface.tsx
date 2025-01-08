@@ -34,6 +34,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 interface UserInfo {
   level: string;
@@ -369,6 +370,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
           {/* Header */}
           <div className="flex items-center justify-end bg-gray-800 px-4 py-2">
             <div className="flex items-center space-x-4">
+            <Link href="/problems/1">
+            <Button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-4 rounded-[40px] text-md font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ease-in-out">
+              Challenge Mode
+            </Button>
+            </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="rounded-full p-0 m-1">
