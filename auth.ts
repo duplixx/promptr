@@ -34,6 +34,9 @@ export const {
         }
 
         const email = credentials.email as string;
+        if (typeof credentials.password !== "string") {
+          throw new Error("Password must be a string");
+        }
         const hashedPassword = bcrypt.hashSync(credentials.password, 10);
 
         let user: any = await db.user.findUnique({
