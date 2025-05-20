@@ -6,6 +6,7 @@ from schemas.user import UserType
 import google.generativeai as genai
 import json
 import uvicorn
+import os
 
 app = FastAPI()
 
@@ -17,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-genai.configure(api_key="AIzaSyDV3J1VwONi5QU3Gi6QCU-6pyLB2GZtPAw")
+genai.configure(os.environ.get('api_key'))
 model = genai.GenerativeModel('gemini-2.0-flash')
 
 class Message(BaseModel):
