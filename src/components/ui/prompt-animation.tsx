@@ -52,7 +52,7 @@ const TypewriterPrompt = () => {
       <span className="mr-2">{currentPrompt}</span>
       <span className="ml-auto flex items-center">
         {getEmojiForPrompt(isImproved)}
-        <ArrowRight className="h-4 w-4 text-blue-400 ml-2" />
+        <ArrowRight className="h-4 w-4 text-second ml-2" />
       </span>
     </div>
   );

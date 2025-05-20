@@ -1,7 +1,14 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Zap, BookOpen, Settings, LogOut } from 'lucide-react'
-import { useSession, signOut } from 'next-auth/react'
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Zap,
+  BookOpen,
+  Settings,
+  LogOut,
+} from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 import {
   Sidebar,
   SidebarHeader,
@@ -13,27 +20,27 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-} from '@/components/ui/sidebar'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import { Progress } from '@/components/ui/progress'
-import { Button } from '@/components/ui/button'
+} from "@/components/ui/sidebar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 
 interface Track {
-  id: string
-  title: string
-  lessons: Lesson[]
+  id: string;
+  title: string;
+  lessons: Lesson[];
 }
 
 interface Lesson {
-  id: string
-  title: string
-  completed: boolean
+  id: string;
+  title: string;
+  completed: boolean;
 }
 
 interface MainSidebarProps {
-  tracks: Track[]
-  isSidebarOpen: boolean
-  setIsSidebarOpen: (isOpen: boolean) => void
+  tracks: Track[];
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (isOpen: boolean) => void;
 }
 
 const MainSidebar: React.FC<MainSidebarProps> = ({
@@ -41,38 +48,42 @@ const MainSidebar: React.FC<MainSidebarProps> = ({
   isSidebarOpen,
   setIsSidebarOpen,
 }) => {
-  const { data: session } = useSession()
-  const userInitial = session?.user?.name?.[0] || '?'
+  const { data: session } = useSession();
+  const userInitial = session?.user?.name?.[0] || "?";
 
   const calculateTrackProgress = (track: Track) => {
-    const completedLessons = track.lessons.filter((lesson) => lesson.completed).length
-    return (completedLessons / track.lessons.length) * 100
-  }
+    const completedLessons = track.lessons.filter(
+      (lesson) => lesson.completed,
+    ).length;
+    return (completedLessons / track.lessons.length) * 100;
+  };
 
   return (
     <motion.div
       initial={false}
       animate={{
-        width: isSidebarOpen ? '350px' : '60px',
+        width: isSidebarOpen ? "350px" : "60px",
         transition: { duration: 0.3 },
       }}
-      className="h-full overflow-hidden bg-gray-900 w-full"
+      className="h-full w-full overflow-hidden bg-gray-900 rounded-xl"
     >
-      <Sidebar className={`h-full ${isSidebarOpen ? 'w-[350px]' : 'w-[60px]'}`}>
+      <Sidebar className={`h-full ${isSidebarOpen ? "w-[350px]" : "w-[60px]"} border-r border-gray-700 rounded-xl`}>
         <SidebarHeader className="bg-gray-800 p-4">
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             {isSidebarOpen && (
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Learning Tracks</h2>
+              <h2 className="bg-gradient-to-r from-[#FFA9AE] via-[#8D81FF] to-[#69E1FE] bg-clip-text text-lg font-semibold text-transparent">
+                Learning Tracks
+              </h2>
             )}
-          
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white hover:bg-gray-700"
-          >
-            {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
-          </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="text-white hover:bg-gray-700"
+            >
+              {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
+            </Button>
           </div>
         </SidebarHeader>
 
@@ -90,16 +101,18 @@ const MainSidebar: React.FC<MainSidebarProps> = ({
                     <SidebarMenuItem key={lesson.id}>
                       <SidebarMenuButton
                         className={`flex items-center space-x-2 ${
-                          !isSidebarOpen ? 'justify-center' : ''
+                          !isSidebarOpen ? "justify-center" : ""
                         }`}
                       >
                         <div
                           className={`h-2 w-2 rounded-full ${
-                            lesson.completed ? 'bg-green-500' : 'bg-gray-500'
+                            lesson.completed ? "bg-green-500" : "bg-gray-500"
                           }`}
                         />
                         {isSidebarOpen && (
-                          <span className="text-sm text-gray-300">{lesson.title}</span>
+                          <span className="text-sm text-gray-300">
+                            {lesson.title}
+                          </span>
                         )}
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -107,7 +120,10 @@ const MainSidebar: React.FC<MainSidebarProps> = ({
                 </SidebarMenu>
                 {isSidebarOpen && (
                   <div className="mt-2 px-4">
-                    <Progress value={calculateTrackProgress(track)} className="h-1" />
+                    <Progress
+                      value={calculateTrackProgress(track)}
+                      className="h-1"
+                    />
                   </div>
                 )}
               </SidebarGroupContent>
@@ -140,7 +156,7 @@ const MainSidebar: React.FC<MainSidebarProps> = ({
             <div className="flex items-center space-x-2">
               <Avatar className="h-8 w-8">
                 <AvatarImage src="" alt="User Avatar" />
-                <span className="flex h-full w-full items-center justify-center rounded-full bg-indigo-500 text-xs font-medium text-white">
+                <span className="bg-second flex h-full w-full items-center justify-center rounded-full text-xs font-medium text-white">
                   {userInitial}
                 </span>
               </Avatar>
@@ -164,7 +180,7 @@ const MainSidebar: React.FC<MainSidebarProps> = ({
         </SidebarFooter>
       </Sidebar>
     </motion.div>
-  )
-}
+  );
+};
 
-export default MainSidebar
+export default MainSidebar;

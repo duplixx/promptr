@@ -147,7 +147,7 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
     <Dialog open={isOpen}>
       <DialogContent className="sm:max-w-[600px] bg-black text-white border border-purple-500/20 shadow-xl shadow-purple-500/10 backdrop-blur-md">
         <DialogHeader>
-          <DialogTitle className="text-4xl lg:text-5xl font-bold mb-4 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+          <DialogTitle className="text-4xl lg:text-5xl font-bold mb-4 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FFA9AE] via-[#8D81FF] to-[#69E1FE]">
             Personalize Your AI Journey
           </DialogTitle>
           <DialogDescription className="text-xl text-white opacity-90">
@@ -162,7 +162,7 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
         <DialogFooter>
           <div className="flex justify-between w-full">
             <Button onClick={handleBack} disabled={currentStep === 0} 
-                    className="bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 rounded-[20px]">
+                    className="bg-white text-black hover:bg-gray-100 px-6 py-3 rounded-[20px]">
               Back
             </Button>
             <Button onClick={handleNext} disabled={
@@ -170,7 +170,7 @@ const UserInputModal: React.FC<UserInputModalProps> = ({ isOpen, onClose }) => {
               (currentStep === 1 && !userInfo.expertise) ||
               (currentStep === 2 && !userInfo.learningStyle) ||
               (currentStep === 3 && userInfo.goals.length === 0)
-            } className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-[20px] text-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ease-in-out">
+            } className="bg-second text-white px-8 py-3 rounded-[20px] text-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ease-in-out">
               {currentStep === steps.length - 1 ? 'Start Your Journey' : 'Next Step'}
             </Button>
           </div>

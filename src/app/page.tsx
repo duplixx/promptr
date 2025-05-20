@@ -15,7 +15,7 @@ export default function LandingPage() {
     <div className="flex flex-col max-h-screen text-gray-100 w-full">
       <Header />
       <main className="flex-1">
-        <div className="py-12">
+        <div className="py-2">
           <GradientBackground>
             <MaxWidthWrapper>
               <HeroSection />
@@ -23,41 +23,41 @@ export default function LandingPage() {
           </GradientBackground>
         </div>
         
-        <div className="py-16 bg-gray-900">
+        {/* <div className="py-16 bg-gray-900">
           <MaxWidthWrapper>
             <StatsSection />
           </MaxWidthWrapper>
-        </div>
+        </div> */}
 
-        <div className="py-20">
+        <div className="">
           <MaxWidthWrapper>
             <FeaturesSection />
           </MaxWidthWrapper>
         </div>
 
-        <div className="py-16 bg-gray-900">
+        {/* <div className="py-16 bg-gray-900">
           <MaxWidthWrapper>
             <HowItWorksSection />
           </MaxWidthWrapper>
-        </div>
-
+        </div> */}
+{/* 
         <div className="py-20">
           <MaxWidthWrapper>
             <TestimonialsSection />
           </MaxWidthWrapper>
-        </div>
-
-        <div className="py-16 bg-gray-900">
+        </div> */}
+{/* 
+        <div className="py-16 bg-black">
           <MaxWidthWrapper>
             <PricingSection />
           </MaxWidthWrapper>
-        </div>
-
+        </div> */}
+{/* 
         <div className="py-20">
           <MaxWidthWrapper>
             <CTASection />
           </MaxWidthWrapper>
-        </div>
+        </div> */}
       </main>
       <Footer />
     </div>

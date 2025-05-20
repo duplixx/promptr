@@ -17,7 +17,13 @@ import Link from "next/link";
 import LoginGithub from "@/components/LoginGithub";
 import { registerWithCreds } from "@/actions/auth";
 import { toast } from "react-hot-toast";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -49,30 +55,32 @@ const SignUp = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData()
+    const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
       if (Array.isArray(value)) {
-        value.forEach(item => formData.append(key, item))
+        value.forEach((item) => formData.append(key, item));
       } else {
-        formData.append(key, value)
+        formData.append(key, value);
       }
-    })
-    
+    });
+
     try {
       await registerWithCreds(formData);
     } catch (error) {
-      toast.error('Something went wrong!')
-      form.setError('root', {
-        message: 'Registration failed'
-      })
+      toast.error("Something went wrong!");
+      form.setError("root", {
+        message: "Registration failed",
+      });
     }
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center">
-      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+    <div className="flex min-h-screen w-full items-center justify-center text-white">
+      <div className="w-full max-w-xl rounded-3xl bg-black/50 p-20 shadow-lg border border-second">
         <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-800">Create Account</h2>
+          <h2 className="text-4xl bg-gradient-to-r from-[#FFA9AE] via-[#8D81FF] to-[#69E1FE] bg-clip-text font-semibold text-transparent">
+            Create Account
+          </h2>
           <p className="mt-2 text-gray-600">
             Join us to start your learning journey
           </p>
@@ -123,108 +131,16 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
-            
-            {/* <FormField
-              control={form.control}
-              name="level"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Level</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select your level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="beginner">Beginner</SelectItem>
-                      <SelectItem value="intermediate">Intermediate</SelectItem>
-                      <SelectItem value="advanced">Advanced</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="expertise"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Area of Expertise</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your area of expertise" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="learningStyle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Learning Style</FormLabel>
-                  <RadioGroup onValueChange={field.onChange} value={field.value}>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="visual" id="visual" className='bg-white'/>
-                      <Label htmlFor="visual">Visual</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="auditory" id="auditory" className='bg-white'/>
-                      <Label htmlFor="auditory">Auditory</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="kinesthetic" id="kinesthetic" className='bg-white'/>
-                      <Label htmlFor="kinesthetic">Kinesthetic</Label>
-                    </div>
-                  </RadioGroup>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="goals"
-              render={() => (
-                <FormItem>
-                  <FormLabel>Goals</FormLabel>
-                  <div className="space-y-2">
-                    {['Improve writing skills', 'Learn advanced techniques', 'Increase efficiency', 'Explore creative applications'].map((goal) => (
-                      <div className="flex items-center space-x-2" key={goal}>
-                        <Checkbox
-                          checked={form.watch('goals').includes(goal)}
-                          onCheckedChange={(checked) => {
-                            const goals = form.watch('goals')
-                            if (checked) {
-                              form.setValue('goals', [...goals, goal])
-                            } else {
-                              form.setValue('goals', goals.filter(g => g !== goal))
-                            }
-                          }}
-                          className='bg-white'
-                        />
-                        <Label>{goal}</Label>
-                      </div>
-                    ))}
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
 
             <AuthButton />
           </form>
+          <LoginGithub />
         </Form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <Link
-              href="/sign-in"
-              className="text-indigo-600 hover:text-indigo-500"
-            >
+            <Link href="/sign-in" className="hover:text-second text-indigo-600">
               Sign in
             </Link>
           </p>

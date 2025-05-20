@@ -3,11 +3,11 @@ import MaxWidthWrapper from './MaxWidthWrapper';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-black border-t-2 border-second">
       <MaxWidthWrapper>
         <div className="py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">Promptr</h3>
+            <h3 className="bg-gradient-to-r from-[#FFA9AE] via-second to-[#69E1FE] text-3xl font-bold mb-2 text-transparent bg-clip-text">Promptr</h3>
             <p className="text-sm">
               Empowering developers with AI-driven code assistance and learning tools.
             </p>

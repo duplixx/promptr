@@ -370,17 +370,17 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
           {/* Header */}
           <div className="flex items-center justify-end bg-gray-800 px-4 py-2">
             <div className="flex items-center space-x-4">
-            <Link href="/problems/1">
-            <Button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-4 rounded-[40px] text-md font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ease-in-out">
-              Challenge Mode
-            </Button>
-            </Link>
+              <Link href="/problems/1">
+                <Button className="text-md rounded-[40px] bg-second to-[#69E1FE] px-4 py-4 font-semibold text-black transition-all duration-300 ease-in-out" variant={"ghost"}>
+                  Challenge Mode
+                </Button>
+              </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="rounded-full p-0 m-1">
+                  <Button variant="ghost" className="m-1 rounded-full p-0">
                     <Avatar>
                       <AvatarImage src="" alt="User Avatar" />
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500 text-white">
+                      <span className="bg-second flex h-10 w-10 items-center justify-center rounded-full text-white">
                         {userInitial?.toUpperCase()}
                       </span>
                     </Avatar>
@@ -456,7 +456,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Type your prompt here..."
-                className="flex-1 rounded-full border-gray-700 bg-gray-800 p-7 text-gray-100 placeholder-gray-400 focus:border-indigo-500"
+                className="focus:border-second flex-1 rounded-full border-gray-700 bg-gray-800 p-7 text-gray-100 placeholder-gray-400"
                 onKeyPress={(e) =>
                   e.key === "Enter" && !e.shiftKey && handleSendMessage()
                 }
@@ -467,7 +467,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
                     <Button
                       onClick={handleSendMessage}
                       disabled={isTyping || !inputValue.trim()}
-                      className="cursor-pointer rounded-full bg-indigo-500 hover:bg-purple-700"
+                      className="bg-second cursor-pointer rounded-full hover:bg-purple-700"
                     >
                       <Send className="h-6 w-6 text-white" />
                     </Button>

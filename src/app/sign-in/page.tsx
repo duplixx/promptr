@@ -52,10 +52,10 @@ const SignIn = () => {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center">
-      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+    <div className="flex min-h-screen w-full items-center justify-center text-white">
+      <div className="w-full max-w-xl rounded-3xl bg-black/50 p-20 shadow-lg border border-second">
         <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-800">Welcome Back!</h2>
+          <h2 className="text-4xl bg-gradient-to-r from-[#FFA9AE] via-[#8D81FF] to-[#69E1FE] bg-clip-text font-semibold text-transparent">Welcome Back!</h2>
           <p className="mt-2 text-gray-600">
             Sign in to continue your learning journey
           </p>
@@ -101,7 +101,7 @@ const SignIn = () => {
             <div className="flex items-center justify-between">
               <Link
                 href="/forgot-password"
-                className="text-sm text-indigo-600 hover:text-indigo-500"
+                className="hover:text-second text-sm text-indigo-600"
               >
                 Forgot password?
               </Link>
@@ -115,10 +115,7 @@ const SignIn = () => {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <Link
-              href="/sign-up"
-              className="text-indigo-600 hover:text-indigo-500"
-            >
+            <Link href="/sign-up" className="hover:text-second text-indigo-600">
               Sign up
             </Link>
           </p>

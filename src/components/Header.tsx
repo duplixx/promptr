@@ -9,11 +9,11 @@ export async function Header() {
   const session = await auth();
   return (
     <header className="fixed left-1/2 top-8 z-50 mx-auto w-full max-w-5xl -translate-x-1/2 transform">
-      <div className="flex items-center justify-between rounded-full border border-purple-500/20 bg-black px-4 py-4 shadow-lg shadow-purple-500/10 backdrop-blur-md">
+      <div className="flex items-center justify-between rounded-full border border-second/50 bg-black px-4 py-4 shadow-lg shadow-second/10 backdrop-blur-md">
         <Link href="/" className="flex items-center space-x-2">
           <svg
             viewBox="0 0 24 24"
-            className="h-8 w-8 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+            className="h-8 w-8 bg-gradient-to-r from-[#FFA9AE] via-[#8D81FF] to-[#69E1FE] bg-clip-text text-transparent"
             fill="none"
             stroke="url(#blue-purple-gradient)"
             strokeWidth="2"
@@ -32,8 +32,8 @@ export async function Header() {
             </defs>
             <path d="M5 3l7 7-7 7m7-7h12" />
           </svg>
-          <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-xl font-semibold text-transparent">
-            PromptMaster
+          <span className="bg-gradient-to-r from-[#FFA9AE] via-[#8D81FF] to-[#69E1FE] bg-clip-text text-xl font-semibold text-transparent">
+            Promptr
           </span>
         </Link>
 
@@ -49,12 +49,12 @@ export async function Header() {
         <div className="flex items-center space-x-4">
           {!session?.user ? (
             <Link href="/sign-in">
-            <Button
-              variant="ghost"
-              className="bg-gradient-to-r from-gray-300 to-blue-300 bg-clip-text text-transparent transition-all duration-300 hover:from-white hover:to-blue-400"
-            >
-              Log In
-            </Button>
+              <Button
+                variant="ghost"
+                className="text-black transition-all duration-300 bg-second"
+              >
+                Log In
+              </Button>
             </Link>
           ) : (
             <>
@@ -89,7 +89,7 @@ function NavLink({
   return (
     <Link
       href={href}
-      className="bg-gradient-to-r from-gray-300 to-blue-300 bg-clip-text text-transparent transition-all duration-300 hover:from-blue-400 hover:to-purple-400"
+      className="text-gray-400 transition-all duration-300 hover:from-blue-400 hover:to-purple-400"
     >
       {children}
     </Link>
