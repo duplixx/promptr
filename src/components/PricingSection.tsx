@@ -48,7 +48,7 @@ const PricingSection = () => {
           Simple, Transparent Pricing
         </h2>
         <p className="text-xl text-gray-400">
-          Choose the plan that's right for you
+          Choose the plan that&apos;s right for you
         </p>
       </div>
       <div className="grid gap-8 md:grid-cols-3">

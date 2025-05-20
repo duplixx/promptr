@@ -2,7 +2,6 @@
 
 import { signIn, signOut } from "auth";
 import { db } from "db";
-import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { hash } from "bcryptjs";
 
