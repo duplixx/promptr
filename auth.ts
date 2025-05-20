@@ -4,7 +4,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { db } from "./db";
-import { saltAndHashPassword } from "@/utils/helper";
 
 export const {
   handlers: { GET, POST },
@@ -35,7 +34,7 @@ export const {
         }
 
         const email = credentials.email as string;
-        const hash = saltAndHashPassword(credentials.password);
+        const hashedPassword = bcrypt.hashSync(credentials.password, 10);
 
         let user: any = await db.user.findUnique({
           where: {
@@ -47,13 +46,13 @@ export const {
           user = await db.user.create({
             data: {
               email,
-              hashedPassword: hash,
+              hashedPassword: hashedPassword,
             },
           });
         } else {
           const isMatch = bcrypt.compareSync(
             credentials.password as string,
-            user.hashedPassword
+            user.hashedPassword,
           );
           if (!isMatch) {
             throw new Error("Incorrect password.");
