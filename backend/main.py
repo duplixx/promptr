@@ -18,7 +18,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-genai.configure(os.environ.get('api_key'))
+api_key = os.environ.get('api_key')
+if not api_key:
+    raise RuntimeError("Missing required environment variable: 'api_key'")
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
 class Message(BaseModel):
