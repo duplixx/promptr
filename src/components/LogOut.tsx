@@ -10,7 +10,7 @@ const LogOut = () => {
       <Button
         onClick={() => logout()}
         variant="ghost"
-        className="text-black bg-textcolor transition-all duration-300 bg-second"
+        className="text-black transition-all duration-300 bg-second"
       >
         Log Out
       </Button>
