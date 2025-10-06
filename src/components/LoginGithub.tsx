@@ -9,7 +9,7 @@ const LoginGithub = () => {
       <Button
         variant="outline"
         type="button"
-        className="w-full border-black"
+        className="w-full border-black text-black"
         onClick={() => login("github")}
       >
         <Github className="mr-2 h-4 w-4" />

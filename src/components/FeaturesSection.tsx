@@ -24,6 +24,26 @@ export default function FeaturesSection() {
             description="Receive intelligent suggestions to optimize your prompts for better results."
           />
         </div>
+
+        <BentoGrid className="mx-auto max-w-7xl md:auto-rows-[28rem]">
+          {items.map((item, i) => (
+            <BentoGridItem
+              key={i}
+              title={item.title}
+              description={item.description}
+              header={item.header}
+              className={cn(
+                "group/bento text-2xl transition-all duration-300 hover:shadow-2xl",
+                "bg-second",
+                "border-second/30 border backdrop-blur-2xl backdrop-filter", // Increased blur from xl to 2xl
+                "overflow-hidden rounded-2xl",
+                "hover:border-second hover:shadow-second/30",
+                "bg-opacity-30",
+                item.className,
+              )}
+            />
+          ))}
+        </BentoGrid>
       </div>
     </section>
   );

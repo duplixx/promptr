@@ -95,6 +95,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
     setIsModalOpen(false);
   };
 
+    fetchUserProfile();
+  }, []);
   const handleSendMessage = async () => {
     if (inputValue.trim() === "" || !userInfo || isTyping) return;
 
@@ -330,37 +332,40 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
         {/* Main Content */}
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between bg-gray-900 px-4 py-2">
+          <div className="flex items-center justify-end bg-gray-800 px-4 py-2">
             <div className="flex items-center space-x-4">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="text-white hover:text-indigo-400"
-              >
-                {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
-              </motion.button>
-            </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-white hover:text-indigo-400"
-                  >
-                    <Settings2 className="h-5 w-5" />
+              <Link href="/problems/1">
+                <Button className="text-md rounded-[40px] bg-second to-[#69E1FE] px-4 py-4 font-semibold text-black transition-all duration-300 ease-in-out" variant={"ghost"}>
+                  Challenge Mode
+                </Button>
+              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="m-1 rounded-full p-0">
+                    <Avatar>
+                      <AvatarImage src="" alt="User Avatar" />
+                      <span className="bg-second flex h-10 w-10 items-center justify-center rounded-full text-white">
+                        {userInitial?.toUpperCase()}
+                      </span>
+                    </Avatar>
                   </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Settings</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40">
+                  <DropdownMenuItem
+                    onClick={() => (window.location.href = "/profile")}
+                  >
+                    View Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => signOut()}>
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
 
           {/* Messages */}
-          <ScrollArea className="flex-1 bg-gray-900" ref={scrollRef}>
+          <ScrollArea className="flex-1 bg-gray-800" ref={scrollRef}>
             <div className="mx-auto max-w-4xl flex-1 space-y-4 p-4">
               <AnimatePresence>
                 {messages.map((message, index) =>
@@ -409,13 +414,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
           </ScrollArea>
 
           {/* Input Area */}
-          <div className="border-t border-gray-700 bg-gray-900 p-4">
-            <div className="mx-auto flex max-w-4xl space-x-2">
+          <div className="border-t border-gray-700 bg-gray-800 p-10">
+            <div className="mx-auto flex max-w-4xl items-center space-x-2">
               <Input
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Type your prompt here..."
-                className="flex-1 rounded-full border-gray-700 bg-gray-800 text-gray-100 placeholder-gray-400 focus:border-indigo-500"
+                className="focus:border-second flex-1 rounded-full border-gray-700 bg-gray-800 p-7 text-gray-100 placeholder-gray-400"
                 onKeyPress={(e) =>
                   e.key === "Enter" && !e.shiftKey && handleSendMessage()
                 }
@@ -428,7 +433,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
                       disabled={isTyping || !inputValue.trim()}
                       className="cursor-pointer rounded-full bg-indigo-500 hover:bg-purple-700"
                     >
-                      <Send className="h-5 w-5 text-white" />
+                      <Send className="h-6 w-6 text-white" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -445,7 +450,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
                       }}
                       className="cursor-pointer rounded-full bg-indigo-700 hover:bg-indigo-600"
                     >
-                      <Zap className="h-5 w-5 text-white" />
+                      <Zap className="h-6 w-6 text-white" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -457,7 +462,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
           </div>
         </div>
 
-        <UserInputModal isOpen={isModalOpen} onClose={handleModalClose} />
+        {!isLoading && (
+          <UserInputModal isOpen={isModalOpen} onClose={handleModalClose} />
+        )}
       </div>
     </SidebarProvider>
   );

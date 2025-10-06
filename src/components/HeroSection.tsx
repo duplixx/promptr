@@ -5,6 +5,40 @@ import TypewriterPrompt from "@/components/ui/prompt-animation";
 import Link from "next/link";
 
 export default function HeroSection() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const promptVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
   return (
     <section className="flex min-h-screen items-center justify-center p-8">
       <div className="max-w-8xl flex w-full flex-col rounded-3xl p-12 lg:flex-row">
@@ -38,14 +72,14 @@ export default function HeroSection() {
               </div>
               <div className="rounded-full bg-gray-800 px-4 py-2 text-sm">
                 Explain quantum computing to a 10-year-old
-              </div>
+              </motion.div>
             </div>
             <div className="mt-72">
               <TypewriterPrompt />
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

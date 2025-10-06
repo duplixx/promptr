@@ -3,7 +3,7 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-black border-t-2 border-second">
       <MaxWidthWrapper>
         <div className="grid grid-cols-1 gap-8 py-12 md:grid-cols-4">
           <div>

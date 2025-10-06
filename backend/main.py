@@ -6,6 +6,7 @@ from schemas.user import UserType
 import google.generativeai as genai
 import json
 import uvicorn
+import os
 
 app = FastAPI()
 
@@ -17,8 +18,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-genai.configure(api_key="AIzaSyAOqw73yo8DkfoeYl4dY7mzwEKUPilBAIk")
-model = genai.GenerativeModel('gemini-1.5-flash')
+api_key = os.environ.get('GOOGLE_GENERATIVE_AI_API_KEY')
+if not api_key:
+    raise RuntimeError("Missing required environment variable: 'GOOGLE_GENERATIVE_AI_API_KEY'")
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel('gemini-2.0-flash')
 
 class Message(BaseModel):
     role: str
@@ -113,3 +117,44 @@ async def analyze_prompt(request: ChatRequest):
     
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+
+
+@app.post("/generate-problems")
+async def generate_problems(user_info: UserType):
+    try:
+        problems_prompt = f"""
+        Generate 5 prompt engineering practice problems tailored for a:
+        Level: {user_info.level}
+        Expertise: {user_info.expertise}
+        Learning Style: {user_info.learning_style}
+        Goals: {', '.join(user_info.goals)}
+
+        Return the problems in this exact JSON format:
+        {{
+            "problems": [
+                {{
+                    "id": number,
+                    "title": "string",
+                    "difficulty": "Easy/Medium/Hard",
+                    "description": "detailed problem description",
+                    "examples": [{{
+                        "input": "string",
+                        "output": "string",
+                        "explanation": "string"
+                    }}],
+                    "testCases": [{{
+                        "input": "string",
+                        "expectedOutput": "string",
+                        "description": "string"
+                    }}]
+                }}
+            ]
+        }}
+        """
+
+        chat = model.start_chat(history=[])
+        result = chat.send_message(problems_prompt)
+        return json.loads(result.text)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
