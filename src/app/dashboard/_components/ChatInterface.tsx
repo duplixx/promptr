@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Settings2, ChevronRight, ChevronLeft, Zap } from "lucide-react";
-import MainSidebar from "./Sidebar";
 import {
   Sidebar,
   SidebarHeader,
@@ -25,16 +24,6 @@ import {
 } from "@/components/ui/tooltip";
 import { Progress } from "@/components/ui/progress";
 import UserInputModal from "./UserInputModal";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Link from "next/link";
 
 interface UserInfo {
   level: string;
@@ -47,11 +36,6 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   user_type: UserInfo;
-}
-
-interface ImprovedPrompt {
-  title: string;
-  prompt: string;
 }
 
 interface PromptAnalysis {
@@ -67,24 +51,11 @@ interface PromptAnalysis {
     reasoning: string;
   }[];
 }
-
 interface ChatInterfaceProps {
   onAnalyzePrompt: (prompt: string, userInfo: UserInfo) => Promise<string>;
 }
 
-interface Track {
-  id: string;
-  title: string;
-  lessons: Lesson[];
-}
-
-interface Lesson {
-  id: string;
-  title: string;
-  completed: boolean;
-}
-
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
+const ChatInterface: React.FC<ChatInterfaceProps> = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -96,27 +67,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [promptStrength, setPromptStrength] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [tracks, setTracks] = useState<Track[]>([
-    {
-      id: "1",
-      title: "Fundamentals",
-      lessons: [
-        { id: "1-1", title: "Introduction to Prompts", completed: false },
-        { id: "1-2", title: "Basic Prompt Structure", completed: false },
-      ],
-    },
-    {
-      id: "2",
-      title: "Advanced Techniques",
-      lessons: [
-        { id: "2-1", title: "Chain of Thought", completed: false },
-        { id: "2-2", title: "Zero-shot Prompting", completed: false },
-      ],
-    },
-  ]);
-
-  const { data: session } = useSession();
-  const userInitial = session?.user?.name?.[0];
 
   useEffect(() => {
     if (userInfo) {
@@ -140,46 +90,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
     }
   }, [messages]);
 
-  const handleModalClose = async (data: UserInfo) => {
+  const handleModalClose = (data: UserInfo) => {
     setUserInfo(data);
     setIsModalOpen(false);
-
-    // Store in MongoDB
-    try {
-      const response = await fetch("/api/user/profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save user profile");
-      }
-    } catch (error) {
-      console.error("Error saving profile:", error);
-    }
   };
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Modify the useEffect that fetches user profile
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await fetch("/api/user/profile");
-        if (response.ok) {
-          const data = await response.json();
-          setUserInfo(data);
-          setIsModalOpen(false);
-        }
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
     fetchUserProfile();
   }, []);
@@ -217,7 +131,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
       });
 
       if (!response.ok) throw new Error("Failed to fetch response");
-      const data = await response.json();
+      const data = (await response.json()) as PromptAnalysis;
       setPromptAnalysis(data);
 
       setMessages((prev) => [
@@ -258,7 +172,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
       className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
     >
       <Card
-        className={`max-w-[85%] border-0 ${message.role === "user" ? "bg-indigo-800" : "bg-indigo-900"} text-gray-100`}
+        className={`max-w-[85%] border-0 ${message.role === "user" ? "bg-indigo-900" : "bg-indigo-900"} text-gray-100`}
       >
         <CardContent className="p-3">
           <p className="whitespace-pre-wrap text-sm">{message.content}</p>
@@ -356,14 +270,64 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
     </motion.div>
   );
 
+  const SidebarContentComponent = () => (
+    <>
+      <SidebarHeader className="border-b border-gray-700 bg-gray-900 p-4">
+        <h2 className="text-lg font-semibold text-white">Your Profile</h2>
+      </SidebarHeader>
+      <SidebarContent className="bg-gray-900 py-4">
+        {userInfo && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="font-black text-indigo-500">
+              Level
+            </SidebarGroupLabel>
+            <SidebarGroupContent className="px-4 text-sm text-gray-300">
+              {userInfo.level}
+            </SidebarGroupContent>
+
+            <SidebarGroupLabel className="font-black text-indigo-500">
+              Expertise
+            </SidebarGroupLabel>
+            <SidebarGroupContent className="px-4 text-sm text-gray-300">
+              {userInfo.expertise}
+            </SidebarGroupContent>
+
+            <SidebarGroupLabel className="font-black text-indigo-500">
+              Learning Style
+            </SidebarGroupLabel>
+            <SidebarGroupContent className="px-4 text-sm text-gray-300">
+              {userInfo.learningStyle}
+            </SidebarGroupContent>
+
+            <SidebarGroupLabel className="font-black text-indigo-500">
+              Goals
+            </SidebarGroupLabel>
+            <SidebarGroupContent className="px-4">
+              <ul className="list-disc pl-4 text-sm text-gray-300">
+                {userInfo.goals.map((goal, index) => (
+                  <li key={index}>{goal}</li>
+                ))}
+              </ul>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+      </SidebarContent>
+    </>
+  );
+
   return (
     <SidebarProvider defaultOpen>
-      <div className="fixed inset-0 flex h-screen w-screen overflow-hidden bg-gray-700 text-gray-100">
-        <MainSidebar
-          tracks={tracks}
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-        />
+      <div className="fixed inset-0 flex h-screen w-screen overflow-hidden bg-indigo-950 text-gray-100">
+        <motion.div
+          initial={false}
+          animate={{ width: isSidebarOpen ? "20rem" : "0rem" }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden border-r border-gray-700 bg-gray-900"
+        >
+          <Sidebar className="w-80">
+            <SidebarContentComponent />
+          </Sidebar>
+        </motion.div>
 
         {/* Main Content */}
         <div className="flex min-w-0 flex-1 flex-col">
@@ -467,7 +431,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onAnalyzePrompt }) => {
                     <Button
                       onClick={handleSendMessage}
                       disabled={isTyping || !inputValue.trim()}
-                      className="bg-second cursor-pointer rounded-full hover:bg-purple-700"
+                      className="cursor-pointer rounded-full bg-indigo-500 hover:bg-purple-700"
                     >
                       <Send className="h-6 w-6 text-white" />
                     </Button>

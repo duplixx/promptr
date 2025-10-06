@@ -1,7 +1,7 @@
 export default function HowItWorksSection() {
   return (
     <section id="how-it-works" className="container mx-auto px-4 py-20">
-      <h2 className="via-second mb-12 bg-gradient-to-r from-[#FFA9AE] to-[#69E1FE] bg-clip-text text-center text-6xl font-bold text-transparent">
+      <h2 className="mb-12 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-center text-3xl font-bold text-transparent">
         How It Works
       </h2>
       <div className="grid gap-8 md:grid-cols-3">
@@ -36,7 +36,7 @@ function StepCard({
 }) {
   return (
     <div className="text-center">
-      <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-second text-2xl font-bold">
+      <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-2xl font-bold">
         {number}
       </div>
       <h3 className="mb-2 text-xl font-semibold">{title}</h3>

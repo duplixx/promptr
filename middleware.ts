@@ -6,9 +6,9 @@ const protectedRoutes = ["/dashboard", "/modules", "/profile"];
 
 export default async function middleware(request: NextRequest) {
   const session = await auth();
-  
+
   const isProtected = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route)
+    request.nextUrl.pathname.startsWith(route),
   );
 
   if (!session && isProtected) {
@@ -16,7 +16,7 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(absoluteURL.toString());
   }
 
-  if (session && request.nextUrl.pathname.startsWith('/sign-in')) {
+  if (session && request.nextUrl.pathname.startsWith("/sign-in")) {
     const absoluteURL = new URL("/dashboard", request.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }

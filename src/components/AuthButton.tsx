@@ -8,8 +8,8 @@ const AuthButton = () => {
       disabled={pending}
       type="submit"
       className={`${
-        pending ? "bg-second" : "bg-second"
-      } rounded-md w-full px-12 py-3 text-sm font-medium text-black`}
+        pending ? "bg-gray-600" : "bg-black"
+      } w-full rounded-md px-12 py-3 text-sm font-medium text-white`}
     >
       {pending ? "Loading..." : "Sign in"}
     </button>

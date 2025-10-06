@@ -56,13 +56,9 @@ const SignUp = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
-    Object.entries(values).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        value.forEach((item) => formData.append(key, item));
-      } else {
-        formData.append(key, value);
-      }
-    });
+    formData.append("name", values.name);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
 
     try {
       await registerWithCreds(formData);
