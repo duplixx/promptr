@@ -1,5 +1,9 @@
 # 🧠 Prompt Engineering Learning Path 🚀
+
 ![Promptr Main Image](assets/main.png)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/duplixx/promptr)
+
 Welcome to the most mind-bending, AI-whispering, prompt-perfecting learning experience this side of the singularity!
 
 ## 🌟 What's This All About?
