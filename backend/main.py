@@ -18,9 +18,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-api_key = os.environ.get('api_key')
+api_key = os.environ.get('GOOGLE_GENERATIVE_AI_API_KEY')
 if not api_key:
-    raise RuntimeError("Missing required environment variable: 'api_key'")
+    raise RuntimeError("Missing required environment variable: 'GOOGLE_GENERATIVE_AI_API_KEY'")
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
