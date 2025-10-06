@@ -27,7 +27,7 @@ export default function LandingPage() {
           <MaxWidthWrapper>
             <StatsSection />
           </MaxWidthWrapper>
-        </div> */}
+        </div>
 
         <div className="">
           <MaxWidthWrapper>
@@ -39,7 +39,7 @@ export default function LandingPage() {
           <MaxWidthWrapper>
             <HowItWorksSection />
           </MaxWidthWrapper>
-        </div> */}
+        </div>
 {/* 
         <div className="py-20">
           <MaxWidthWrapper>

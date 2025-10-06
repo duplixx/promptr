@@ -79,10 +79,6 @@ export const registerWithCreds = async (formData: FormData): Promise<void> => {
         name,
         email,
         hashedPassword: await hash(password, 10),
-        level,
-        expertise,
-        learningStyle,
-        goals,
       },
     });
 

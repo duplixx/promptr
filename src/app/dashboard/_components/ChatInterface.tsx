@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,6 +24,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import UserInputModal from "./UserInputModal";
 
@@ -68,6 +77,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
   const [promptStrength, setPromptStrength] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const userInitial = userInfo?.level ? userInfo.level.charAt(0) : 'U';
+
   useEffect(() => {
     if (userInfo) {
       const welcomeMessage = `Welcome! I see you're a ${userInfo.level} prompt engineer with expertise in ${userInfo.expertise}. 
@@ -95,8 +106,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
     setIsModalOpen(false);
   };
 
-    fetchUserProfile();
-  }, []);
   const handleSendMessage = async () => {
     if (inputValue.trim() === "" || !userInfo || isTyping) return;
 
@@ -462,9 +471,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = () => {
           </div>
         </div>
 
-        {!isLoading && (
-          <UserInputModal isOpen={isModalOpen} onClose={handleModalClose} />
-        )}
+        <UserInputModal isOpen={isModalOpen} onClose={handleModalClose} />
       </div>
     </SidebarProvider>
   );

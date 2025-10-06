@@ -25,7 +25,7 @@ export default function FeaturesSection() {
           />
         </div>
 
-        <BentoGrid className="mx-auto max-w-7xl md:auto-rows-[28rem]">
+        {/* <BentoGrid className="mx-auto max-w-7xl md:auto-rows-[28rem]">
           {items.map((item, i) => (
             <BentoGridItem
               key={i}
@@ -43,7 +43,7 @@ export default function FeaturesSection() {
               )}
             />
           ))}
-        </BentoGrid>
+        </BentoGrid> */}
       </div>
     </section>
   );

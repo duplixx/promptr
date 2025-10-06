@@ -52,7 +52,7 @@ export const {
           user = await db.user.create({
             data: {
               email,
-              hashedPassword: hashedPassword,
+              hashedPassword: hash,
             },
           });
         } else {
