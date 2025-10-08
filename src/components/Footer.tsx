@@ -1,91 +1,170 @@
+"use client";
+
 import Link from "next/link";
-import MaxWidthWrapper from "./MaxWidthWrapper";
+import { Github, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Footer = () => {
+  const productLinks = [
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/problems/1", label: "Challenges" },
+    { href: "#features", label: "Features" },
+    { href: "#how-it-works", label: "How It Works" },
+  ];
+
+  const resourceLinks = [
+    { href: "/docs", label: "Documentation" },
+    { href: "/api", label: "API" },
+    { href: "/guides", label: "Guides" },
+    { href: "/blog", label: "Blog" },
+  ];
+
+  const companyLinks = [
+    { href: "/about", label: "About" },
+    { href: "/careers", label: "Careers" },
+    { href: "/contact", label: "Contact" },
+    { href: "/legal", label: "Legal" },
+  ];
+
+  const socialLinks = [
+    { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+    { icon: Github, href: "https://github.com", label: "GitHub" },
+    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:hello@promptr.ai", label: "Email" },
+  ];
+
   return (
-    <footer className="bg-black border-t-2 border-second">
-      <MaxWidthWrapper>
-        <div className="grid grid-cols-1 gap-8 py-12 md:grid-cols-4">
-          <div>
-            <h3 className="mb-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-xl font-bold text-transparent">
-              Promptr
-            </h3>
-            <p className="text-sm">
-              Empowering developers with AI-driven code assistance and learning
-              tools.
+    <footer className="relative border-t border-gray-800 bg-black">
+      <div className="container mx-auto px-4 py-16">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
+          {/* Brand Column */}
+          <div className="lg:col-span-2">
+            <Link href="/" className="mb-4 inline-flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-[#8D81FF]" />
+              <h3 className="bg-gradient-to-r from-[#FFA9AE] via-[#8D81FF] to-[#69E1FE] bg-clip-text text-2xl font-bold text-transparent">
+                Promptr
+              </h3>
+            </Link>
+            <p className="mb-6 text-gray-400">
+              Master the art of prompt engineering with AI-powered feedback and
+              real-time streaming. Join thousands learning the future of AI
+              interaction.
             </p>
+            {/* Social Links */}
+            <div className="flex gap-4">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <motion.a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-800 bg-gray-900/50 text-gray-400 transition-colors hover:border-gray-700 hover:text-white"
+                    aria-label={social.label}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </motion.a>
+                );
+              })}
+            </div>
           </div>
 
+          {/* Product Links */}
           <div>
-            <h4 className="mb-4 font-semibold">Product</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/features">Features</Link>
-              </li>
-              <li>
-                <Link href="/pricing">Pricing</Link>
-              </li>
-              <li>
-                <Link href="/integrations">Integrations</Link>
-              </li>
-              <li>
-                <Link href="/changelog">Changelog</Link>
-              </li>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Product
+            </h4>
+            <ul className="space-y-3">
+              {productLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-400 transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Resources Links */}
           <div>
-            <h4 className="mb-4 font-semibold">Resources</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/docs">Documentation</Link>
-              </li>
-              <li>
-                <Link href="/api">API</Link>
-              </li>
-              <li>
-                <Link href="/guides">Guides</Link>
-              </li>
-              <li>
-                <Link href="/blog">Blog</Link>
-              </li>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Resources
+            </h4>
+            <ul className="space-y-3">
+              {resourceLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-400 transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Company Links */}
           <div>
-            <h4 className="mb-4 font-semibold">Company</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/about">About</Link>
-              </li>
-              <li>
-                <Link href="/careers">Careers</Link>
-              </li>
-              <li>
-                <Link href="/contact">Contact</Link>
-              </li>
-              <li>
-                <Link href="/legal">Legal</Link>
-              </li>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Company
+            </h4>
+            <ul className="space-y-3">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-400 transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between border-t border-gray-800 py-6 md:flex-row">
-          <p className="text-sm">© 2024 Promptr. All rights reserved.</p>
-          <div className="mt-4 flex space-x-6 md:mt-0">
-            <Link href="/privacy" className="text-sm hover:text-white">
+        {/* Bottom Bar */}
+        <div className="mt-16 flex flex-col items-center justify-between border-t border-gray-800 pt-8 md:flex-row">
+          <p className="text-sm text-gray-400">
+            © 2025 Promptr. All rights reserved.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-6 md:mt-0">
+            <Link
+              href="/privacy"
+              className="text-sm text-gray-400 transition-colors hover:text-white"
+            >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-sm hover:text-white">
+            <Link
+              href="/terms"
+              className="text-sm text-gray-400 transition-colors hover:text-white"
+            >
               Terms of Service
             </Link>
-            <Link href="/cookies" className="text-sm hover:text-white">
+            <Link
+              href="/cookies"
+              className="text-sm text-gray-400 transition-colors hover:text-white"
+            >
               Cookie Policy
             </Link>
           </div>
         </div>
-      </MaxWidthWrapper>
+
+        {/* Badge */}
+        <div className="mt-8 text-center">
+          <p className="text-xs text-gray-600">
+            Made with ❤️ by engineers, for engineers
+          </p>
+        </div>
+      </div>
     </footer>
   );
 };

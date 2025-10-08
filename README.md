@@ -10,34 +10,89 @@ Welcome to the most mind-bending, AI-whispering, prompt-perfecting learning expe
 
 Ever wanted to sweet-talk an AI? Well, you've come to the right place! Our Prompt Engineering Learning Path is like a gym for your AI communication skills. By the end, you'll be flexing those prompt muscles and making ChatGPT blush!
 
+## ✨ NEW: Modern AI Dashboard
+
+We've completely revamped the dashboard with cutting-edge AI technology! 🎉
+
+### 🚀 What's New?
+- **🌊 Real-time Streaming**: Watch AI responses appear instantly with Vercel AI SDK
+- **🎨 Beautiful UI**: Modern gradient design with smooth animations
+- **💬 Smart Chat**: Powered by Google Gemini 2.0 with personalized feedback
+- **📊 Profile Tracking**: Monitor your learning journey with an intelligent sidebar
+- **⚡ Prompt Suggestions**: Quick-start templates to get you inspired
+- **📱 Fully Responsive**: Perfect experience on any device
+
+**[📖 Read the Dashboard Guide](DASHBOARD_GUIDE.md)** | **[⚡ Quick Start in 5 Minutes](QUICK_START.md)**
+
+## ✨ NEW: AI-Powered Challenge Mode
+
+Challenge your prompt engineering skills with our revamped Challenge Mode! 🎯
+
+### 🚀 What's New in Challenges?
+- **🤖 AI Evaluation**: Real-time feedback powered by Google Gemini
+- **📊 Detailed Scoring**: 0-100 scores with actionable suggestions
+- **🎨 Modern UI**: Beautiful gradients and smooth animations
+- **🏆 Progress Tracking**: Visual progress bars and completion badges
+- **💡 Smart Feedback**: Learn what works and what doesn't
+- **🎯 5 Challenges**: From Easy to Hard difficulty levels
+
+**[📖 Challenge Mode Guide](CHALLENGE_MODE_GUIDE.md)** | **[🎯 Try Challenges](/problems/1)**
+
 ## 🎯 Features
 
-- 🤖 Interactive ChatGPT-style interface (minus the existential crisis)
+- 🤖 Interactive ChatGPT-style interface powered by Vercel AI SDK
 - 🧩 15 modules covering everything from "Hello, AI" to "Inception-level prompt inception"
 - 🏋️‍♀️ Hands-on labs (No, you can't ask the AI to do them for you)
 - 🌈 Beginner to Advanced paths (From "What's a prompt?" to "I am become prompt, destroyer of writer's block")
 - 🎭 Role-playing exercises (Pretend you're Shakespeare asking GPT-4 for gardening tips)
+- ⚡ Real-time streaming responses with Google Gemini
+- 🎨 Modern, gradient-based dark theme
+- 💾 Personalized learning profiles
 
 ## 🚀 Quick Start
 
-1. Clone this repo (Time travel not included)
-2. Install dependencies:
+1. **Clone this repo** (Time travel not included)
+   ```bash
+   git clone https://github.com/duplixx/promptr.git
+   cd promptr
    ```
+
+2. **Get your Google AI API Key**
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Create an API key
+   - Copy it for the next step
+
+3. **Set up environment variables**
+   ```bash
+   # Create .env.local file
+   echo "GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here" > .env.local
+   ```
+
+4. **Install dependencies**
+   ```bash
    npm install
    # or
    yarn install
    # or
    pnpm install
    ```
-3. Run the development server:
-   ```
+
+5. **Run the development server**
+   ```bash
    npm run dev
    # or
    yarn dev
    # or
    pnpm dev
    ```
-4. Open [http://localhost:3000](http://localhost:3000) and start your journey to prompt mastery!
+
+6. **Open the app**
+   - Homepage: [http://localhost:3000](http://localhost:3000)
+   - Dashboard: [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
+
+**🎉 That's it! Start your journey to prompt mastery!**
+
+> 💡 **First time?** Check out our [5-Minute Quick Start Guide](QUICK_START.md)
 
 ## 🗺️ Learning Path
 
@@ -48,12 +103,23 @@ Ever wanted to sweet-talk an AI? Well, you've come to the right place! Our Promp
 
 ## 🛠️ Tech Stack
 
-- [Next.js](https://nextjs.org/) - Because we're living in the future
-- [React](https://reactjs.org/) - For UI wizardry
-- [shadcn/ui](https://ui.shadcn.com/) - Making things pretty (and accessible!)
+### Frontend
+- [Next.js 14](https://nextjs.org/) - Because we're living in the future
+- [React 18](https://reactjs.org/) - For UI wizardry
 - [TypeScript](https://www.typescriptlang.org/) - For those who like their types static and their errors caught early
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [shadcn/ui](https://ui.shadcn.com/) - Making things pretty (and accessible!)
+- [Framer Motion](https://www.framer.com/motion/) - Smooth, powerful animations
 
-- [FastApi](https://fastapi.tiangolo.com/) - Driving our high-performance Python backend with modern async capabilities
+### AI & Backend
+- **[Vercel AI SDK](https://sdk.vercel.ai/)** - Modern AI streaming framework ⚡
+- **[Google Gemini 2.0](https://ai.google.dev/)** - State-of-the-art AI model
+- [FastAPI](https://fastapi.tiangolo.com/) - High-performance Python backend (optional)
+- [NextAuth.js](https://next-auth.js.org/) - Authentication solution
+
+### Database & Storage
+- [MongoDB](https://www.mongodb.com/) - NoSQL database
+- [Prisma](https://www.prisma.io/) - Next-generation ORM
 
 ## 🚀 Deployment
 
