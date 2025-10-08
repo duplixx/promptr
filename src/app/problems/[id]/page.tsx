@@ -48,9 +48,9 @@
 
 "use client";
 
-import { ProblemDescription } from "@/components/problem-description";
-import { ProblemSidebar } from "@/components/problem-sidebar";
-import { PromptEditor } from "@/components/prompt-editor";
+import { ModernProblemDescription } from "@/components/ModernProblemDescription";
+import { ModernProblemSidebar } from "@/components/ModernProblemSidebar";
+import { ModernPromptEditor } from "@/components/ModernPromptEditor";
 import { problems, problemsList } from "@/data/problems";
 import {
   ResizableHandle,
@@ -66,35 +66,41 @@ export default function ProblemPage({
   params: { id: keyof typeof problems };
 }) {
   const problem = problems[params.id];
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   if (!problem) {
     notFound();
   }
 
   return (
-    <div className="h-screen w-full bg-gray-900 flex justify-between fixed inset-0">
-        <div>
-        <ProblemSidebar
-          problems={problemsList}
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-        />
-        </div>
-        <div className="p-5">
-        <ResizablePanelGroup
-          direction="horizontal"
-          className="flex"
-        >
-          <ResizablePanel defaultSize={50} className="overflow-auto">
-            <ProblemDescription problem={problem} />
+    <div className="fixed inset-0 flex h-screen w-full overflow-hidden bg-gradient-to-br from-gray-950 via-indigo-950 to-gray-900">
+      {/* Sidebar */}
+      <ModernProblemSidebar
+        problems={problemsList}
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+
+      {/* Main Content */}
+      <div className="flex flex-1 overflow-hidden">
+        <ResizablePanelGroup direction="horizontal" className="flex">
+          {/* Problem Description Panel */}
+          <ResizablePanel defaultSize={50} minSize={30} className="overflow-hidden">
+            <ModernProblemDescription problem={problem} />
           </ResizablePanel>
-          <ResizableHandle />
-          <ResizablePanel defaultSize={50} className="overflow-auto">
-            <PromptEditor testCases={problem.testCases} />
+
+          {/* Resizable Handle */}
+          <ResizableHandle className="w-1 bg-gray-700/50 transition-colors hover:bg-indigo-500/50" />
+
+          {/* Prompt Editor Panel */}
+          <ResizablePanel defaultSize={50} minSize={30} className="overflow-hidden">
+            <ModernPromptEditor
+              testCases={problem.testCases}
+              problemContext={problem.description}
+            />
           </ResizablePanel>
         </ResizablePanelGroup>
-        </div>
+      </div>
     </div>
   );
 }

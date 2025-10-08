@@ -1,0 +1,6 @@
+pip
+fastapi
+uvicorn[standard]
+pydantic
+google-generativeai
+

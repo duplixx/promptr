@@ -12,52 +12,33 @@ import StatsSection from "@/components/StatsSection";
 
 export default function LandingPage() {
   return (
-    <div className="flex max-h-screen w-full flex-col text-gray-100">
+    <div className="flex min-h-screen w-full flex-col text-gray-100">
       <Header />
       <main className="flex-1">
-        <div className="py-2">
+        {/* Hero Section with Gradient Background */}
+        <div className="relative">
           <GradientBackground>
-            <MaxWidthWrapper>
               <HeroSection />
-            </MaxWidthWrapper>
           </GradientBackground>
         </div>
 
-        <div className="bg-gray-900 py-16">
-          <MaxWidthWrapper>
-            <StatsSection />
-          </MaxWidthWrapper>
-        </div>
+        {/* Stats Section */}
+        <StatsSection />
 
-        <div className="">
-          <MaxWidthWrapper>
-            <FeaturesSection />
-          </MaxWidthWrapper>
-        </div>
+        {/* Features Section */}
+        <FeaturesSection />
 
-        <div className="bg-gray-900 py-16">
-          <MaxWidthWrapper>
-            <HowItWorksSection />
-          </MaxWidthWrapper>
-        </div>
-{/* 
-        <div className="py-20">
-          <MaxWidthWrapper>
-            <TestimonialsSection />
-          </MaxWidthWrapper>
-        </div>
+        {/* How It Works Section */}
+        <HowItWorksSection />
 
-        <div className="bg-gray-900 py-16">
-          <MaxWidthWrapper>
-            <PricingSection />
-          </MaxWidthWrapper>
-        </div> */}
-{/* 
-        <div className="py-20">
-          <MaxWidthWrapper>
-            <CTASection />
-          </MaxWidthWrapper>
-        </div> */}
+        {/* Testimonials - Coming Soon */}
+        {/* <TestimonialsSection /> */}
+
+        {/* Pricing - Coming Soon */}
+        {/* <PricingSection /> */}
+
+        {/* CTA Section - Coming Soon */}
+        <CTASection />
       </main>
       <Footer />
     </div>
