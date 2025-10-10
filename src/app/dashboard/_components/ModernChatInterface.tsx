@@ -73,11 +73,13 @@ const ModernChatInterface: React.FC = () => {
 
   const userInitial = userInfo?.level ? userInfo.level.charAt(0) : "U";
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   // Auto-scroll to bottom when new messages are added
+  //   const scrollContainer = document.querySelector('[data-radix-scroll-area-viewport]');
+  //   if (scrollContainer) {
+  //     scrollContainer.scrollTop = scrollContainer.scrollHeight;
+  //   }
+  // }, [messages]);
 
   const handleModalClose = (data: UserInfo) => {
     setUserInfo(data);
@@ -344,7 +346,7 @@ const ModernChatInterface: React.FC = () => {
         {/* Messages Area */}
         <ScrollArea className="flex-1 p-4">
           <div className="mx-auto max-w-4xl space-y-6 pb-32">
-            {messages.length === 0 && !isLoading && (
+            {messages?.length === 0 && !isLoading && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -390,7 +392,7 @@ const ModernChatInterface: React.FC = () => {
             )}
 
             <AnimatePresence>
-              {messages.map((message, index) => renderMessage(message, index))}
+              {messages?.map((message, index) => renderMessage(message, index))}
             </AnimatePresence>
 
             {isLoading && (

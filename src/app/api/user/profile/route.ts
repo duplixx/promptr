@@ -1,57 +1,121 @@
-import { NextResponse } from 'next/server'
-import { connectToDatabase } from '@/lib/mongodb'
-import { auth } from 'auth'
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8000';
+
+export async function GET(request: NextRequest) {
   try {
-    const session = await auth()
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const { db } = await connectToDatabase()
+    const authHeader = request.headers.get('authorization');
     
-    const userProfile = await db.collection('userProfiles').findOne({
-      email: session.user.email
-    })
-
-    if (!userProfile) {
-      return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
+    if (!authHeader) {
+      return NextResponse.json(
+        { error: 'Authorization header required' },
+        { status: 401 }
+      );
     }
 
-    return NextResponse.json(userProfile)
+    const response = await fetch(`${BACKEND_URL}/users/me/profile`, {
+      method: 'GET',
+      headers: {
+        'Authorization': authHeader,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: data.detail || 'Failed to get profile' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    console.error('Get profile API error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const session = await auth()
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authHeader = request.headers.get('authorization');
+    const body = await request.json();
+    
+    if (!authHeader) {
+      return NextResponse.json(
+        { error: 'Authorization header required' },
+        { status: 401 }
+      );
     }
 
-    const data = await req.json()
-    const { db } = await connectToDatabase()
-
-    const result = await db.collection('userProfiles').updateOne(
-      { email: session.user.email },
-      { 
-        $set: {
-          email: session.user.email,
-          level: data.level,
-          expertise: data.expertise,
-          learningStyle: data.learningStyle,
-          goals: data.goals,
-          updatedAt: new Date()
-        }
+    const response = await fetch(`${BACKEND_URL}/users/me/profile`, {
+      method: 'POST',
+      headers: {
+        'Authorization': authHeader,
+        'Content-Type': 'application/json',
       },
-      { upsert: true }
-    )
+      body: JSON.stringify(body),
+    });
 
-    return NextResponse.json({ success: true, data: result })
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: data.detail || 'Failed to create profile' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    console.error('Create profile API error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('authorization');
+    const body = await request.json();
+    
+    if (!authHeader) {
+      return NextResponse.json(
+        { error: 'Authorization header required' },
+        { status: 401 }
+      );
+    }
+
+    const response = await fetch(`${BACKEND_URL}/users/me/profile`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': authHeader,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: data.detail || 'Failed to update profile' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Update profile API error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }

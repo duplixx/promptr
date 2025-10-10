@@ -51,10 +51,11 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mb-8 flex justify-center mt-8"
           >
-            <AnimatedGradientText>
-              <Sparkles className="mr-2 h-4 w-4" />
-              <span className="bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-clip-text text-transparent">
-                YC W24 • Backed by Industry Leaders
+            <AnimatedGradientText
+              className="bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-clip-text text-transparent"
+            >
+              <span className="bg-gradient-to-r from-white to-black bg-clip-text text-transparent">
+                Pre-YC W24 • Backed by Industry Leaders
               </span>
             </AnimatedGradientText>
           </motion.div>

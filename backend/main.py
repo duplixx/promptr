@@ -1,14 +1,21 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
-from typing import List
-from schemas.user import UserType
+from typing import List, Optional
+from schemas.user import (
+    UserType, UserCreate, UserResponse, UserLogin, Token, 
+    UserProfileCreate, UserProfileUpdate, UserProfileResponse, SessionData
+)
+from services.user_service import UserService
+from database import create_indexes
+from auth import create_access_token
 import google.generativeai as genai
 import json
 import uvicorn
 import os
 
-app = FastAPI()
+app = FastAPI(title="Promptr API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,6 +24,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Security
+security = HTTPBearer()
+
+# Startup event
+@app.on_event("startup")
+async def startup_event():
+    """Create database indexes on startup."""
+    await create_indexes()
 
 api_key = os.environ.get('GOOGLE_GENERATIVE_AI_API_KEY')
 if not api_key:
@@ -36,6 +52,118 @@ class PromptFeedback(BaseModel):
     label: str
     feedback: str
     tags: List[str]
+
+# Authentication dependency
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Get current user from JWT token."""
+    from auth import verify_token
+    
+    token = credentials.credentials
+    payload = verify_token(token)
+    if not payload:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    user_id = payload.get("sub")
+    if not user_id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    user = await UserService.get_user_by_id(user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    return user
+
+# User Management Endpoints
+@app.post("/users/register", response_model=UserResponse)
+async def register_user(user_data: UserCreate):
+    """Register a new user."""
+    try:
+        user = await UserService.create_user(user_data)
+        return UserResponse(**user)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.post("/users/login", response_model=Token)
+async def login_user(login_data: UserLogin):
+    """Login user and return access token."""
+    user = await UserService.authenticate_user(login_data.email, login_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    access_token = create_access_token(data={"sub": user["id"]})
+    return {"access_token": access_token, "token_type": "bearer"}
+
+@app.get("/users/me", response_model=UserResponse)
+async def get_current_user_info(current_user: dict = Depends(get_current_user)):
+    """Get current user information."""
+    return UserResponse(**current_user)
+
+@app.get("/users/me/profile", response_model=UserProfileResponse)
+async def get_user_profile(current_user: dict = Depends(get_current_user)):
+    """Get current user's profile."""
+    profile = await UserService.get_user_profile(current_user["id"])
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    return UserProfileResponse(**profile)
+
+@app.post("/users/me/profile", response_model=UserProfileResponse)
+async def create_user_profile(
+    profile_data: UserProfileCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create or update user profile."""
+    try:
+        profile = await UserService.create_user_profile(current_user["id"], profile_data)
+        return UserProfileResponse(**profile)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to create profile")
+
+@app.put("/users/me/profile", response_model=UserProfileResponse)
+async def update_user_profile(
+    profile_data: UserProfileUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update user profile."""
+    try:
+        profile = await UserService.update_user_profile(current_user["id"], profile_data)
+        if not profile:
+            raise HTTPException(status_code=404, detail="Profile not found")
+        return UserProfileResponse(**profile)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to update profile")
+
+@app.get("/users/me/session")
+async def get_user_session_data(current_user: dict = Depends(get_current_user)):
+    """Get user session data with profile."""
+    try:
+        user_with_profile = await UserService.get_user_with_profile(current_user["id"])
+        if not user_with_profile:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        return {
+            "user": UserResponse(**user_with_profile),
+            "profile": UserProfileResponse(**user_with_profile["profile"]) if user_with_profile.get("profile") else None
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to get session data")
 
 @app.post("/analyze-prompt")
 async def analyze_prompt(request: ChatRequest):
