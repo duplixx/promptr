@@ -5,10 +5,11 @@ import { useUserStore } from "@/lib/simple-store";
 import UserInputModal from "./_components/UserInputModal";
 import AuthModal from "@/components/AuthModal";
 import ModernChatInterface from "./_components/ModernChatInterface";
+import SkillTree from "@/components/SkillTree";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { LogOut, User, Award, Target, BookOpen, TrendingUp, X } from "lucide-react";
+import { LogOut, User, Award, Target, BookOpen, TrendingUp, X, Crown, Zap, Building } from "lucide-react";
 
 export default function DashboardPage() {
   const { 
@@ -16,6 +17,8 @@ export default function DashboardPage() {
     hasCompletedOnboarding, 
     profile, 
     user, 
+    subscription,
+    progress,
     logout, 
     loadUserData 
   } = useUserStore();
@@ -54,6 +57,16 @@ export default function DashboardPage() {
   const toggleProfileCard = () => {
     setShowProfileCard(!showProfileCard);
   };
+
+  // Debug logging
+  console.log('Dashboard Debug:', {
+    isAuthenticated,
+    hasCompletedOnboarding,
+    profile,
+    user,
+    subscription,
+    progress
+  });
 
   if (!isAuthenticated) {
     return (
@@ -181,10 +194,43 @@ export default function DashboardPage() {
                                 ))}
                               </div>
                             </div>
+
+                            {/* Subscription Status */}
+                            <div className="pt-3 border-t border-gray-700">
+                              <div className="flex items-center gap-2 mb-2">
+                                {(!subscription || subscription.tier === 'free') && <User className="h-4 w-4 text-gray-400" />}
+                                {subscription?.tier === 'pro' && <Crown className="h-4 w-4 text-yellow-400" />}
+                                {subscription?.tier === 'business' && <Building className="h-4 w-4 text-blue-400" />}
+                                <span className="text-gray-300 text-sm">Plan:</span>
+                                <Badge 
+                                  variant="outline" 
+                                  className={`${
+                                    (!subscription || subscription.tier === 'free')
+                                      ? 'border-gray-500/30 bg-gray-900/20 text-gray-300'
+                                      : subscription.tier === 'pro'
+                                      ? 'border-yellow-500/30 bg-yellow-900/20 text-yellow-300'
+                                      : 'border-blue-500/30 bg-blue-900/20 text-blue-300'
+                                  }`}
+                                >
+                                  {subscription?.tier?.toUpperCase() || 'FREE'}
+                                </Badge>
+                              </div>
+                              <div className="text-xs text-gray-400">
+                                {(!subscription || subscription.tier === 'free') && (
+                                  <span>Daily analyses: {subscription?.limits?.dailyAnalyses || 5}/5</span>
+                                )}
+                                {subscription?.tier === 'pro' && (
+                                  <span>Unlimited analyses • Advanced features</span>
+                                )}
+                                {subscription?.tier === 'business' && (
+                                  <span>Team features • API access • Custom integrations</span>
+                                )}
+                              </div>
+                            </div>
                           </div>
 
                           {/* Actions */}
-                          <div className="mt-4 pt-3 border-t border-gray-700">
+                          <div className="mt-4 pt-3 border-t border-gray-700 space-y-2">
                             <Button
                               variant="outline"
                               size="sm"
@@ -195,6 +241,35 @@ export default function DashboardPage() {
                               className="w-full border-gray-600 text-gray-300 hover:bg-gray-800"
                             >
                               Edit Profile
+                            </Button>
+                            
+                            {(!subscription || subscription.tier === 'free') && (
+                              <Button
+                                size="sm"
+                                onClick={() => {
+                                  setShowProfileCard(false);
+                                  // TODO: Open upgrade modal
+                                  console.log('Upgrade to Pro');
+                                }}
+                                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600"
+                              >
+                                <Crown className="h-4 w-4 mr-2" />
+                                Upgrade to Pro
+                              </Button>
+                            )}
+                            
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setShowProfileCard(false);
+                                // TODO: Open skill tree modal
+                                console.log('View Skill Tree');
+                              }}
+                              className="w-full border-emerald-600 text-emerald-300 hover:bg-emerald-800"
+                            >
+                              <TrendingUp className="h-4 w-4 mr-2" />
+                              View Progress
                             </Button>
                           </div>
                         </CardContent>

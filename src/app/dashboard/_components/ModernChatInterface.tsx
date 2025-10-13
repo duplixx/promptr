@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useChat } from "ai/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -33,6 +32,7 @@ import { Separator } from "@/components/ui/separator";
 import UserInputModal from "./UserInputModal";
 import PromptSuggestions from "./PromptSuggestions";
 import ReactMarkdown from "react-markdown";
+import { useUserStore } from "@/lib/simple-store";
 
 interface UserInfo {
   level: string;
@@ -52,7 +52,7 @@ const ModernChatInterface: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
-
+  const { logout } = useUserStore();
   const {
     messages,
     input,
@@ -334,7 +334,7 @@ const ModernChatInterface: React.FC = () => {
                   >
                     View Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => signOut()} className="hover:bg-gray-800">
+                  <DropdownMenuItem onClick={() => logout} className="hover:bg-gray-800">
                     Log Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>

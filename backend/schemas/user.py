@@ -1,6 +1,49 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
+from enum import Enum
+
+class SubscriptionTier(str, Enum):
+    FREE = "free"
+    PRO = "pro"
+    BUSINESS = "business"
+
+class SubscriptionLimits(BaseModel):
+    daily_analyses: int
+    monthly_analyses: int
+    api_calls: int
+
+class SubscriptionCreate(BaseModel):
+    tier: SubscriptionTier
+    features: List[str]
+    limits: SubscriptionLimits
+    expires_at: Optional[datetime] = None
+
+class SubscriptionResponse(BaseModel):
+    id: str
+    user_id: str
+    tier: SubscriptionTier
+    features: List[str]
+    limits: SubscriptionLimits
+    expires_at: Optional[datetime]
+    is_active: bool
+    created_at: datetime
+    updated_at: datetime
+
+class SkillProgress(BaseModel):
+    skill_id: str
+    category: str
+    level: int
+    max_level: int
+    xp_earned: int
+    unlocked: bool
+
+class UserProgress(BaseModel):
+    user_id: str
+    total_xp: int
+    skills: List[SkillProgress]
+    achievements: List[str]
+    last_updated: datetime
 
 class UserType(BaseModel):
     level: str
@@ -53,6 +96,7 @@ class Token(BaseModel):
     token_type: str
 
 class SessionData(BaseModel):
-    user_id: int
-    profile_data: Optional[UserProfileResponse] = None
-    preferences: Optional[dict] = None
+    user: UserResponse
+    profile: Optional[UserProfileResponse] = None
+    subscription: Optional[SubscriptionResponse] = None
+    progress: Optional[UserProgress] = None

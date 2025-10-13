@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: promptr-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: promptr
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongodb-init:/docker-entrypoint-initdb.d
+    networks:
+      - promptr-network
+
+  # Backend Service (FastAPI)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: promptr-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URL=mongodb://admin:password123@mongodb:27017/promptr?authSource=admin
+      - DATABASE_NAME=promptr
+      - SECRET_KEY=your-super-secret-jwt-key-here-change-in-production
+      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
+      - DEBUG=false
+      - HOST=0.0.0.0
+      - PORT=8000
+    depends_on:
+      - mongodb
+    networks:
+      - promptr-network
+    volumes:
+      - ./backend:/app
+    command: python run.py
+
+  # Frontend Service (Next.js)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: promptr-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=your-nextauth-secret-key-change-in-production
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/promptr?authSource=admin
+      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
+    depends_on:
+      - backend
+    networks:
+      - promptr-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  promptr-network:
+    driver: bridge

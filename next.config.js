@@ -10,6 +10,7 @@ const config = {
     ignoreDuringBuilds: true,
   },
   reactStrictMode: true,
+  output: 'standalone',
 
   /**
    * If you have `experimental: { appDir: true }`, then you will need to uncomment the below.

@@ -5,9 +5,12 @@ from pydantic import BaseModel
 from typing import List, Optional
 from schemas.user import (
     UserType, UserCreate, UserResponse, UserLogin, Token, 
-    UserProfileCreate, UserProfileUpdate, UserProfileResponse, SessionData
+    UserProfileCreate, UserProfileUpdate, UserProfileResponse, SessionData,
+    SubscriptionCreate, SubscriptionResponse, UserProgress
 )
 from services.user_service import UserService
+from services.subscription_service import SubscriptionService
+from services.progress_service import ProgressService
 from database import create_indexes
 from auth import create_access_token
 import google.generativeai as genai
@@ -33,6 +36,17 @@ security = HTTPBearer()
 async def startup_event():
     """Create database indexes on startup."""
     await create_indexes()
+
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for Docker."""
+    return {"status": "healthy", "service": "promptr-backend"}
+
+# Initialize services
+user_service = UserService()
+subscription_service = SubscriptionService()
+progress_service = ProgressService()
 
 api_key = os.environ.get('GOOGLE_GENERATIVE_AI_API_KEY')
 if not api_key:
@@ -152,22 +166,137 @@ async def update_user_profile(
 
 @app.get("/users/me/session")
 async def get_user_session_data(current_user: dict = Depends(get_current_user)):
-    """Get user session data with profile."""
+    """Get user session data with profile, subscription, and progress."""
     try:
         user_with_profile = await UserService.get_user_with_profile(current_user["id"])
         if not user_with_profile:
             raise HTTPException(status_code=404, detail="User not found")
         
-        return {
-            "user": UserResponse(**user_with_profile),
-            "profile": UserProfileResponse(**user_with_profile["profile"]) if user_with_profile.get("profile") else None
-        }
+        # Get or create subscription
+        subscription = await get_user_subscription(current_user["id"])
+        
+        # Get or create progress
+        progress = await get_user_progress(current_user["id"])
+        
+        return SessionData(
+            user=UserResponse(**user_with_profile),
+            profile=UserProfileResponse(**user_with_profile["profile"]) if user_with_profile.get("profile") else None,
+            subscription=subscription,
+            progress=progress
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to get session data")
 
-@app.post("/analyze-prompt")
-async def analyze_prompt(request: ChatRequest):
+# Helper functions for session data
+async def get_user_subscription(user_id: str) -> Optional[SubscriptionResponse]:
+    """Get or create user subscription"""
+    # In a real implementation, this would query the database
+    # For now, return a default free subscription
+    return subscription_service.create_default_subscription(user_id)
+
+async def get_user_progress(user_id: str) -> Optional[UserProgress]:
+    """Get or create user progress"""
+    # In a real implementation, this would query the database
+    # For now, return default progress
+    return progress_service.create_default_progress(user_id)
+
+# Subscription endpoints
+@app.get("/subscriptions/me")
+async def get_my_subscription(current_user: dict = Depends(get_current_user)):
+    """Get current user's subscription"""
     try:
+        subscription = await get_user_subscription(current_user["id"])
+        return subscription
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to get subscription")
+
+@app.post("/subscriptions/upgrade")
+async def upgrade_subscription(
+    subscription_data: SubscriptionCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Upgrade user subscription"""
+    try:
+        new_subscription = subscription_service.upgrade_subscription(
+            current_user["id"],
+            subscription_data.tier,
+            subscription_data.expires_at
+        )
+        return new_subscription
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to upgrade subscription")
+
+# Progress endpoints
+@app.get("/progress/me")
+async def get_my_progress(current_user: dict = Depends(get_current_user)):
+    """Get current user's progress"""
+    try:
+        progress = await get_user_progress(current_user["id"])
+        return progress
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to get progress")
+
+@app.post("/progress/add-xp")
+async def add_xp_to_skill(
+    skill_id: str,
+    xp_amount: int,
+    current_user: dict = Depends(get_current_user)
+):
+    """Add XP to a specific skill"""
+    try:
+        progress = await get_user_progress(current_user["id"])
+        if not progress:
+            progress = progress_service.create_default_progress(current_user["id"])
+        
+        updated_progress = progress_service.add_xp_to_skill(progress, skill_id, xp_amount)
+        return updated_progress
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to add XP")
+
+@app.get("/progress/skills/{category}")
+async def get_skill_category_progress(
+    category: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get progress for a specific skill category"""
+    try:
+        progress = await get_user_progress(current_user["id"])
+        if not progress:
+            return {"error": "No progress found"}
+        
+        category_progress = progress_service.get_skill_progress(progress, category)
+        return category_progress
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to get category progress")
+
+@app.get("/progress/overall")
+async def get_overall_progress(current_user: dict = Depends(get_current_user)):
+    """Get overall progress summary"""
+    try:
+        progress = await get_user_progress(current_user["id"])
+        if not progress:
+            return {"error": "No progress found"}
+        
+        overall = progress_service.get_overall_progress(progress)
+        return overall
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to get overall progress")
+
+@app.post("/analyze-prompt")
+async def analyze_prompt(
+    request: ChatRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    try:
+        # Check subscription limits
+        subscription = await get_user_subscription(current_user["id"])
+        if not subscription_service.is_subscription_active(subscription):
+            raise HTTPException(status_code=403, detail="Subscription expired")
+        
+        # Check usage limits (in a real app, you'd track actual usage)
+        if not subscription_service.check_usage_limits(subscription, daily_usage=0, monthly_usage=0):
+            raise HTTPException(status_code=429, detail="Usage limit exceeded. Upgrade to continue.")
+        
         prompt = request.messages[-1].content
         user_info = request.user_type
 
@@ -221,6 +350,14 @@ async def analyze_prompt(request: ChatRequest):
             if response_text.startswith('```json'):
                 response_text = response_text[7:-3]
             analysis = json.loads(response_text)
+            
+            # Award XP for prompt analysis
+            progress = await get_user_progress(current_user["id"])
+            if progress:
+                # Award XP based on prompt quality
+                xp_amount = 10 if analysis["label"] == "STRONG" else 5
+                updated_progress = progress_service.add_xp_to_skill(progress, "clarity-basics", xp_amount)
+                # In a real app, you'd save this to the database
             
             return {
                 "label": analysis["label"],

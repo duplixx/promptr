@@ -58,6 +58,30 @@ export interface TokenResponse {
 export interface SessionData {
   user: User;
   profile?: UserProfile;
+  subscription?: {
+    tier: 'free' | 'pro' | 'business';
+    features: string[];
+    limits: {
+      dailyAnalyses: number;
+      monthlyAnalyses: number;
+      apiCalls: number;
+    };
+    expiresAt?: string;
+  };
+  progress?: {
+    userId: string;
+    totalXp: number;
+    skills: Array<{
+      skillId: string;
+      category: string;
+      level: number;
+      maxLevel: number;
+      xpEarned: number;
+      unlocked: boolean;
+    }>;
+    achievements: string[];
+    lastUpdated: string;
+  };
 }
 
 class ApiError extends Error {
@@ -210,7 +234,7 @@ export const profileApi = {
   },
 
   /**
-   * Get complete session data (user + profile)
+   * Get complete session data (user + profile + subscription + progress)
    */
   async getSessionData(): Promise<SessionData> {
     const response = await fetch(`${API_BASE_URL}/api/user/session`, {
@@ -218,6 +242,84 @@ export const profileApi = {
       headers: getAuthHeaders(),
     });
     return handleResponse<SessionData>(response);
+  },
+};
+
+/**
+ * Subscription APIs
+ */
+export const subscriptionApi = {
+  /**
+   * Get user subscription
+   */
+  async getSubscription(): Promise<SessionData['subscription']> {
+    const response = await fetch(`${API_BASE_URL}/subscriptions/me`, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse<SessionData['subscription']>(response);
+  },
+
+  /**
+   * Upgrade subscription
+   */
+  async upgradeSubscription(tier: 'pro' | 'business'): Promise<SessionData['subscription']> {
+    const response = await fetch(`${API_BASE_URL}/subscriptions/upgrade`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ tier }),
+    });
+    return handleResponse<SessionData['subscription']>(response);
+  },
+};
+
+/**
+ * Progress APIs
+ */
+export const progressApi = {
+  /**
+   * Get user progress
+   */
+  async getProgress(): Promise<SessionData['progress']> {
+    const response = await fetch(`${API_BASE_URL}/progress/me`, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse<SessionData['progress']>(response);
+  },
+
+  /**
+   * Add XP to a skill
+   */
+  async addXpToSkill(skillId: string, xpAmount: number): Promise<SessionData['progress']> {
+    const response = await fetch(`${API_BASE_URL}/progress/add-xp`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ skillId, xpAmount }),
+    });
+    return handleResponse<SessionData['progress']>(response);
+  },
+
+  /**
+   * Get skill category progress
+   */
+  async getSkillCategoryProgress(category: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/progress/skills/${category}`, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(response);
+  },
+
+  /**
+   * Get overall progress
+   */
+  async getOverallProgress(): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/progress/overall`, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(response);
   },
 };
 

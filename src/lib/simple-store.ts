@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { authApi, profileApi, apiUtils, type User, type UserProfileCreate, type UserProfileUpdate } from './api';
+import { authApi, profileApi, apiUtils, type User, type UserProfileCreate, type UserProfileUpdate, type SessionData } from './api';
 
 export interface UserProfile {
   level: string;
@@ -8,10 +8,38 @@ export interface UserProfile {
   goals: string[];
 }
 
+export interface UserProgress {
+  userId: string;
+  totalXp: number;
+  skills: Array<{
+    skillId: string;
+    category: string;
+    level: number;
+    maxLevel: number;
+    xpEarned: number;
+    unlocked: boolean;
+  }>;
+  achievements: string[];
+  lastUpdated: string;
+}
+
+export interface Subscription {
+  tier: 'free' | 'pro' | 'business';
+  features: string[];
+  limits: {
+    dailyAnalyses: number;
+    monthlyAnalyses: number;
+    apiCalls: number;
+  };
+  expiresAt?: string;
+}
+
 interface UserState {
   // User data
   user: User | null;
   profile: UserProfile | null;
+  subscription: Subscription | null;
+  progress: UserProgress | null;
   isAuthenticated: boolean;
   hasCompletedOnboarding: boolean;
   isLoading: boolean;
@@ -20,6 +48,8 @@ interface UserState {
   // Actions
   setUser: (user: User | null) => void;
   setProfile: (profile: UserProfile | null) => void;
+  setSubscription: (subscription: Subscription | null) => void;
+  setProgress: (progress: UserProgress | null) => void;
   setAuthenticated: (authenticated: boolean) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
@@ -39,6 +69,8 @@ export const useUserStore = create<UserState>((set, get) => ({
   // Initial state
   user: null,
   profile: null,
+  subscription: null,
+  progress: null,
   isAuthenticated: false,
   hasCompletedOnboarding: false,
   isLoading: false,
@@ -47,6 +79,8 @@ export const useUserStore = create<UserState>((set, get) => ({
   // Basic setters
   setUser: (user) => set({ user }),
   setProfile: (profile) => set({ profile }),
+  setSubscription: (subscription) => set({ subscription }),
+  setProgress: (progress) => set({ progress }),
   setAuthenticated: (authenticated) => set({ isAuthenticated: authenticated }),
   setLoading: (loading) => set({ isLoading: loading }),
   setError: (error) => set({ error }),
@@ -111,6 +145,8 @@ export const useUserStore = create<UserState>((set, get) => ({
     set({
       user: null,
       profile: null,
+      subscription: null,
+      progress: null,
       isAuthenticated: false,
       hasCompletedOnboarding: false,
       error: null,
@@ -148,6 +184,30 @@ export const useUserStore = create<UserState>((set, get) => ({
           expertise: sessionData.profile.expertise,
           learningStyle: sessionData.profile.learning_style,
           goals: sessionData.profile.goals,
+        } : null,
+        subscription: sessionData.subscription ? {
+          tier: sessionData.subscription.tier,
+          features: sessionData.subscription.features,
+          limits: {
+            dailyAnalyses: sessionData.subscription.limits.dailyAnalyses,
+            monthlyAnalyses: sessionData.subscription.limits.monthlyAnalyses,
+            apiCalls: sessionData.subscription.limits.apiCalls,
+          },
+        } : {
+          tier: 'free',
+          features: ['basic_analysis', 'profile_creation'],
+          limits: {
+            dailyAnalyses: 5,
+            monthlyAnalyses: 50,
+            apiCalls: 0,
+          },
+        },
+        progress: sessionData.progress ? {
+          userId: sessionData.progress.userId,
+          totalXp: sessionData.progress.totalXp,
+          skills: sessionData.progress.skills,
+          achievements: sessionData.progress.achievements,
+          lastUpdated: sessionData.progress.lastUpdated,
         } : null,
         hasCompletedOnboarding: !!sessionData.profile,
         isLoading: false,
