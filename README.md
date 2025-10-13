@@ -174,7 +174,7 @@ Make sure to set these environment variables in your deployment platform:
 |----------|-------------|----------|
 | `DATABASE_URL` | MongoDB connection string | Yes |
 | `GOOGLE_GENERATIVE_AI_API_KEY` | Google Gemini API key for AI features | Yes |
-| `NEXTAUTH_SECRET` | Secret for NextAuth.js (generate with `openssl rand -base64 32`) | Yes |
+| `NEXTAUTH_SECRET` | Secret fo r NextAuth.js (generate with `openssl rand -base64 32`) | Yes |
 | `NEXTAUTH_URL` | Your deployed app URL | Yes (production only) |
 
 ## 🤝 Contributing
