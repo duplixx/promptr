@@ -13,16 +13,25 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# Check if Docker Compose is installed
-if ! command -v docker-compose &> /dev/null; then
+# Check if Docker Compose is installed (V2 or V1)
+if command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE="docker-compose"
+elif docker compose version &> /dev/null; then
+    DOCKER_COMPOSE="docker compose"
+else
     echo "❌ Docker Compose is not installed. Please install Docker Compose first."
     exit 1
 fi
+
+echo "✓ Using: $DOCKER_COMPOSE"
 
 # Check if .env file exists
 if [ ! -f .env ]; then
     echo "⚠️  .env file not found. Creating from template..."
     cat > .env << EOF
+# Database
+DATABASE_URL=mongodb://admin:password123@mongodb:27017/promptr?authSource=admin
+
 # Google AI Configuration
 GOOGLE_GENERATIVE_AI_API_KEY=your-google-ai-api-key-here
 
@@ -66,7 +75,7 @@ show_usage() {
 # Function to start services
 start_services() {
     echo "🚀 Starting Promptr services..."
-    docker-compose up -d
+    $DOCKER_COMPOSE up -d
     echo "✅ Services started successfully!"
     echo ""
     echo "🌐 Application URLs:"
@@ -81,35 +90,35 @@ start_services() {
 # Function to stop services
 stop_services() {
     echo "🛑 Stopping Promptr services..."
-    docker-compose down
+    $DOCKER_COMPOSE down
     echo "✅ Services stopped successfully!"
 }
 
 # Function to restart services
 restart_services() {
     echo "🔄 Restarting Promptr services..."
-    docker-compose down
-    docker-compose up -d
+    $DOCKER_COMPOSE down
+    $DOCKER_COMPOSE up -d
     echo "✅ Services restarted successfully!"
 }
 
 # Function to build services
 build_services() {
     echo "🔨 Building Promptr services..."
-    docker-compose build --no-cache
+    $DOCKER_COMPOSE build --no-cache
     echo "✅ Services built successfully!"
 }
 
 # Function to show logs
 show_logs() {
     echo "📋 Showing logs for all services..."
-    docker-compose logs -f
+    $DOCKER_COMPOSE logs -f
 }
 
 # Function to clean up
 clean_up() {
     echo "🧹 Cleaning up Promptr services and data..."
-    docker-compose down -v --remove-orphans
+    $DOCKER_COMPOSE down -v --remove-orphans
     docker system prune -f
     echo "✅ Cleanup completed successfully!"
 }
@@ -118,7 +127,7 @@ clean_up() {
 show_status() {
     echo "📊 Promptr services status:"
     echo "=========================="
-    docker-compose ps
+    $DOCKER_COMPOSE ps
     echo ""
     echo "🔍 Health checks:"
     echo "   Backend: $(curl -s http://localhost:8000/health 2>/dev/null | grep -o '"status":"healthy"' || echo "❌ Not responding")"

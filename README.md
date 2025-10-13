@@ -123,7 +123,35 @@ Challenge your prompt engineering skills with our revamped Challenge Mode! 🎯
 
 ## 🚀 Deployment
 
-### Deploy to Vercel (Recommended)
+### 📚 Complete Deployment Guide
+
+For comprehensive deployment instructions covering both frontend and backend, see our **[Complete Deployment Guide](DEPLOYMENT_COMPLETE.md)**.
+
+The guide covers:
+- 🐳 Docker deployment (recommended for full-stack)
+- ☁️ Vercel deployment (frontend)
+- 🔧 Manual deployment
+- 🔑 Environment variable setup
+- 🛠️ Troubleshooting
+
+### Quick Deploy Options
+
+**Option 1: Quick Deploy Script**
+```bash
+./quick-deploy.sh
+```
+
+**Option 2: Docker (Full Stack)**
+```bash
+# Ensure .env file is configured
+docker compose up -d
+```
+
+**Option 3: Vercel (Frontend Only)**
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/duplixx/promptr)
+
+### Deploy to Vercel (Recommended for Frontend)
 
 The easiest way to deploy this Next.js app is to use [Vercel](https://vercel.com):
 
@@ -141,6 +169,7 @@ The easiest way to deploy this Next.js app is to use [Vercel](https://vercel.com
    GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key
    NEXTAUTH_SECRET=your_nextauth_secret (generate with: openssl rand -base64 32)
    NEXTAUTH_URL=https://your-deployment-url.vercel.app
+   SKIP_ENV_VALIDATION=true
    ```
 
 4. **Deploy!**
@@ -150,21 +179,11 @@ The easiest way to deploy this Next.js app is to use [Vercel](https://vercel.com
 
 ### Deploy to Other Platforms
 
-#### Netlify
-1. Connect your repository to Netlify
-2. Set build command: `npm run build`
-3. Set publish directory: `.next`
-4. Add the same environment variables as above
-
-#### Docker
-1. Build the Docker image:
-   ```bash
-   docker build -t promptr .
-   ```
-2. Run the container:
-   ```bash
-   docker run -p 3000:3000 -e DATABASE_URL=your_mongodb_url promptr
-   ```
+See [DEPLOYMENT_COMPLETE.md](DEPLOYMENT_COMPLETE.md) for detailed instructions on:
+- Docker deployment (includes backend and MongoDB)
+- Railway deployment
+- AWS EC2 deployment
+- Manual deployment options
 
 ### Environment Variables
 
@@ -176,6 +195,7 @@ Make sure to set these environment variables in your deployment platform:
 | `GOOGLE_GENERATIVE_AI_API_KEY` | Google Gemini API key for AI features | Yes |
 | `NEXTAUTH_SECRET` | Secret fo r NextAuth.js (generate with `openssl rand -base64 32`) | Yes |
 | `NEXTAUTH_URL` | Your deployed app URL | Yes (production only) |
+| `SKIP_ENV_VALIDATION` | Skip env validation during build | Recommended for deployment |
 
 ## 🤝 Contributing
 
